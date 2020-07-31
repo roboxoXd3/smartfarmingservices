@@ -1,434 +1,579 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animations/loading_animations.dart';
+
+import 'package:http_parser/http_parser.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
-import 'package:smartfarmingservices/src/Screens/HomePage/DisplayHomePage/Screens/MyHomePage/ReusableHeading.dart';
-import 'TabBarView.dart';
-import 'EachitemPageLayout.dart';
+import 'package:smartfarmingservices/src/Services/Dialog.dart';
+
+// import 'package:sft_admin/widgets/Reusable.dart';
 
 class EachItemPage extends StatefulWidget {
-  Datagrid obj;
-  EachItemPage(this.obj, this.myList);
-  List<DataItem> myList;
+  String name;
+  String images;
+//  bool downloading;
+//
+//  String overview = "", category = "", growthStages = "", possibleDiseases = "";
+//
+//  ///weather condition table part
+//  String temperature = "";
+//  String humidity = "";
+//  String moisture = "";
+//  String pH = "";
+////
+//  ///chemical table part
+//  String nitrogen = "";
+//  String phosphorus = "";
+//  String potash = "";
+//  String urea = "";
+//
+//  ///crop result tabledata
+//  String farmArea = "";
+//  String investmentcost = "";
+//  String marketrates = "";
+//  String productioncost = "";
+//  String seedshown = "";
+//  String totalprouctivity = "";
+
+  EachItemPage({@required this.name, this.images});
 
   @override
   _EachItemPageState createState() => _EachItemPageState();
 }
 
 class _EachItemPageState extends State<EachItemPage> {
-  List itemImage = [
-    'asset/images/vegetableImagesItem.png',
-    'asset/images/fruitsImageitem.png',
-    'asset/images/barleyImageItem.png',
-    'asset/images/vegetableImagesItem.png',
-    'asset/images/fruitsImageitem.png',
-    'asset/images/barleyImageItem.png',
-    'asset/images/vegetableImagesItem.png',
-    'asset/images/fruitsImageitem.png',
-    'asset/images/barleyImageItem.png',
-  ];
+  final String url = "https://dc6bb3f05be3.ngrok.io/product";
+  final String postUrl = "https://dc6bb3f05be3.ngrok.io/crop";
 
-  List<TileType> tiletype = [
-    TileType('Overview', 'para'),
-    TileType('Growth cycle', 'list'),
-    TileType('Favorable weather conditions', 'table'),
-    TileType('Suitable pesticides and fertilizers', 'table'),
-    TileType('Possible diseases', 'list'),
-    TileType('Crop results', 'table'),
-  ];
+  final myController = TextEditingController();
+  List newValues = new List();
+  var dir;
+  String filename;
+  var path;
+  var imageId;
+
+  Future category;
+  final _formKey = GlobalKey<FormState>();
+  Map value;
+  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+//  Crops data;
+
+  Future listCategory() async {
+    http.Response response;
+    response = await http.get("${url}/${widget.name}");
+
+    if (response.statusCode == 200) {
+      value = json.decode(response.body);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    category = listCategory();
+//    downloadFile();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0.4,
-        title: Text(
-          widget.obj.name,
-          style: TextStyle(fontFamily: 'Varela'),
-        ),
-        flexibleSpace: kAppBarContainer,
-      ),
-      body: Column(
-        children: <Widget>[
-          Container(
-            width: double.infinity,
-            height: MediaQuery.of(context).size.height / 3,
-            child: Image.asset(
-              widget.obj.imagelink,
-//              widget.obj.bigImagelink,
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(
-                width: 4,
-                color: Colors.grey[400],
-              ),
-            ),
-          ),
-          ReusableHeadingCard(
-            name: "${widget.obj.name} Info",
-          ),
-          Expanded(
-            child: Container(
-              color: Colors.grey[200],
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: tiletype.map(
-                    (tt) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 5),
-                        child: Card(
-                          elevation: 3,
-                          child: ExpansionTile(
-                            title: Text(
-                              tt.title,
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20.0,
-                                  // fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w500),
+      body: FutureBuilder(
+          future: category,
+          builder: (context, snapshot) {
+            return (value == null)
+                ? Center(
+                    child: Container(
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            LoadingBouncingGrid.square(
+                              backgroundColor: Colors.green,
+                              size: 80,
                             ),
-                            backgroundColor: Colors.green[50],
-                            children: [
-                              Container(
-                                child: (tt.inputType == "para")
-                                    ? Container(
-                                        padding: EdgeInsets.all(4),
-                                        child: Text(
-                                          kOverView,
-                                          style: TextStyle(
-                                            fontFamily: 'Varela',
-                                            fontSize: 15.0,
-                                          ),
-                                        ),
-                                      )
-                                    : (tt.inputType == "list")
-                                        ? Container(
-                                            height: 250,
-                                            child: (tt.title == "Growth cycle")
-                                                ? ListView.builder(
-                                                    itemCount:
-                                                        kGrowthCycle.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Container(
-                                                        margin:
-                                                            EdgeInsets.all(5.0),
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    10.0),
-                                                        child: Text(
-                                                          "${index + 1}" +
-                                                              ")" +
-                                                              " " +
-                                                              kGrowthCycle[
-                                                                  index],
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Varela',
-                                                            fontSize: 15.0,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        ),
-                                                      );
-                                                    },
-                                                  )
-                                                : ListView.builder(
-                                                    scrollDirection:
-                                                        Axis.vertical,
-                                                    itemCount: kDiseases.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Container(
-                                                        margin:
-                                                            EdgeInsets.all(5.0),
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    10.0),
-                                                        child: Text(
-                                                          "${index + 1}" +
-                                                              ")" +
-                                                              " " +
-                                                              kDiseases[index],
-                                                          style: TextStyle(
-                                                            fontFamily:
-                                                                'Varela',
-                                                            fontSize: 15.0,
-                                                          ),
-                                                          textAlign:
-                                                              TextAlign.start,
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
+                            SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Fetching Data, thanks for your patience.",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                  fontFamily: 'Varela',
+                                  color: Colors.green),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                : Scaffold(
+                    body: SafeArea(
+                      child: NestedScrollView(
+                        headerSliverBuilder:
+                            (BuildContext context, bool innerBoxIsScrolled) {
+                          return <Widget>[
+                            SliverAppBar(
+                              expandedHeight: 300.0,
+                              floating: false,
+                              pinned: true,
+                              flexibleSpace: Container(
+                                decoration:
+                                    BoxDecoration(gradient: kGradientColor),
+                                child: FlexibleSpaceBar(
+                                  centerTitle: true,
+                                  title: Text(
+                                    "${widget.name.toString().toUpperCase()}",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 24.0,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Varela'),
+                                  ),
+                                  background: Container(
+                                    padding: EdgeInsets.all(4),
+                                    width: MediaQuery.of(context).size.width,
+                                    height:
+                                        MediaQuery.of(context).size.height / 2,
+                                    child: (widget.images != null)
+                                        ? Image.network(
+                                            widget.images,
+                                            fit: BoxFit.fill,
                                           )
-                                        : Container(
-                                            height: 400,
-                                            child: (tt.title == "Crop results")
-                                                ? DataTable(
-                                                    columns: [
-                                                      DataColumn(
-                                                        label: Text(
-                                                          "Parameter",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Varela',
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      ),
-                                                      DataColumn(
-                                                        label: Text(
-                                                          "Value",
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'Varela',
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600),
-                                                        ),
-                                                      )
-                                                    ],
-                                                    rows: [
-                                                      DataRow(
-                                                        cells: [
-                                                          DataCell(
-                                                            Text(
-                                                                "Area of farm (hector)"),
-                                                          ),
-                                                          DataCell(
-                                                            Text(""),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      DataRow(
-                                                        cells: [
-                                                          DataCell(
-                                                            Text(
-                                                                "Seed shown (in kg)"),
-                                                          ),
-                                                          DataCell(
-                                                            Text(""),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      DataRow(
-                                                        cells: [
-                                                          DataCell(
-                                                            Text(
-                                                                "Total productivity (in kg)"),
-                                                          ),
-                                                          DataCell(
-                                                            Text(""),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      DataRow(
-                                                        cells: [
-                                                          DataCell(
-                                                            Text(
-                                                                "Investment Cost"),
-                                                          ),
-                                                          DataCell(
-                                                            Text(""),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      DataRow(
-                                                        cells: [
-                                                          DataCell(
-                                                            Text(
-                                                                "Production cost"),
-                                                          ),
-                                                          DataCell(
-                                                            Text(""),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      DataRow(
-                                                        cells: [
-                                                          DataCell(
-                                                            Text(
-                                                                "Average  market rates"),
-                                                          ),
-                                                          DataCell(
-                                                            Text(""),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  )
-                                                : (tt.title ==
-                                                        "Favorable weather conditions")
-                                                    ? DataTable(
-                                                        columns: [
-                                                          DataColumn(
-                                                            label: Text(
-                                                              "Parameter",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'Varela',
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            ),
-                                                          ),
-                                                          DataColumn(
-                                                              label: Text(
-                                                            "Value",
-                                                            style: TextStyle(
-                                                                fontFamily:
-                                                                    'Varela',
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ))
-                                                        ],
-                                                        rows: [
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                    "Temperature"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                    "Humidity"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                    "Moisture"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                    "pH Value"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : DataTable(
-                                                        columns: [
-                                                          DataColumn(
-                                                            label: Text(
-                                                              "Fertilizer/Nutrients",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'Varela',
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            ),
-                                                          ),
-                                                          DataColumn(
-                                                            label: Text(
-                                                              "Requirement(kg/acre)",
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'Varela',
-                                                                  fontSize: 15,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600),
-                                                            ),
-                                                          )
-                                                        ],
-                                                        rows: [
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text("Urea"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                    "Nitrogen"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text(
-                                                                    "Phosphorus"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          DataRow(
-                                                            cells: [
-                                                              DataCell(
-                                                                Text("Potash"),
-                                                              ),
-                                                              DataCell(
-                                                                Text(""),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
+                                        : Chip(
+                                            label:
+                                                Text("Fetching the image..."),
                                           ),
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        width: 4,
+                                        color: Colors.grey[400],
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ],
+                            ),
+                          ];
+                        },
+                        body: Expanded(
+                          child: SingleChildScrollView(
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Card(
+                                        color: Colors.green,
+                                        child: ExpansionTile(
+                                          title: Text("Overview"),
+                                          children: [
+                                            Text(
+                                              value['Overview'].toString(),
+                                              maxLines: 6,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Card(
+                                        color: Colors.green,
+                                        child: ExpansionTile(
+                                          title: Text("Location"),
+                                          children: [
+                                            Text(
+                                              value['Location'].toString(),
+                                              maxLines: 6,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Card(
+                                        color: Colors.green,
+                                        child: ExpansionTile(
+                                          title: Text("Growth Stages"),
+                                          children: [
+                                            Text(
+                                              value['Crop_cycle'].toString(),
+                                              maxLines: 6,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Card(
+                                        color: Colors.green,
+                                        child: ExpansionTile(
+                                          title: Text("Possible_diseases"),
+                                          children: [
+                                            Text(
+                                              value['Possible_disease']
+                                                  .toString(),
+                                              maxLines: 6,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Card(
+                                        color: Colors.green,
+                                        child: ExpansionTile(
+                                          title: Text(
+                                              "Favourable Weather Condition"),
+                                          children: [
+                                            DataTable(columns: [
+                                              DataColumn(
+                                                label: Text(
+                                                  'Parameter',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                              DataColumn(
+                                                label: Text(
+                                                  'Value',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                            ], rows: [
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Temperature',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(
+                                                      value['Temperature']
+                                                          .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Humidity',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value['Humidity']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Moisture',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value['Moisture']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Ph_value',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value['Ph_value']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                            ]),
+                                          ],
+                                        ),
+                                      ),
+                                      Card(
+                                        color: Colors.green,
+                                        child: ExpansionTile(
+                                          title: Text("Fertilizers/Nutrients"),
+                                          children: [
+                                            DataTable(columns: [
+                                              DataColumn(
+                                                label: Text(
+                                                  'Parameter',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                              DataColumn(
+                                                label: Text(
+                                                  'Value',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                            ], rows: [
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Nitrogen',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value['Nitrogen']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Phosphorus',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(
+                                                      value['Phosphorus']
+                                                          .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Potash',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value['Potash']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Urea',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                    onTap: () {
+                                                      // _displayDialog(context);
+                                                    },
+                                                    child: Text(value['Urea']
+                                                        .toString()))),
+                                              ]),
+                                            ]),
+                                          ],
+                                        ),
+                                      ),
+                                      Card(
+                                        color: Colors.green,
+                                        child: ExpansionTile(
+                                          title: Text("Crop Result"),
+                                          children: [
+                                            DataTable(columns: [
+                                              DataColumn(
+                                                label: Text(
+                                                  'Parameter',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                              DataColumn(
+                                                label: Text(
+                                                  'Value',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black,
+                                                      fontSize: 15),
+                                                ),
+                                              ),
+                                            ], rows: [
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Area_of_farm',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(
+                                                      value['Area_of_farm']
+                                                          .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Investment_cost',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(
+                                                      value['Investment_cost']
+                                                          .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Average_market_rates',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value[
+                                                          'Average_market_rates']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Production_Cost',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(
+                                                      value['Production_Cost']
+                                                          .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Seed_Sown',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value['Seed_Sown']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                              DataRow(cells: [
+                                                DataCell(Text(
+                                                  'Total_productivity',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )),
+                                                DataCell(GestureDetector(
+                                                  onTap: () {
+                                                    // _displayDialog(context);
+                                                  },
+                                                  child: Text(value[
+                                                          'Total_productivity']
+                                                      .toString()),
+                                                )),
+                                              ]),
+                                            ]),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+//                                    RaisedButton(
+//                                      onPressed: putData,
+//                                      child: Text("SaveData"),
+//                                    )
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ).toList(),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+                      ),
+                    ),
+                  );
+          }),
     );
   }
-}
 
-class TileType {
-  final String title;
-  final String inputType;
-  TileType(this.title, this.inputType);
+//  displayDialog(BuildContext context) async {
+//    return showDialog(
+//        context: context,
+//        builder: (context) {
+//          return AlertDialog(
+//            title: Text('Enter the new Value'),
+//            content: TextField(
+//              // controller: myController,
+//              decoration: InputDecoration(hintText: "Enter Value here"),
+//            ),
+//            actions: <Widget>[
+//              new FlatButton(
+//                child: new Text('SUBMIT'),
+//                onPressed: () {
+//                  widget.name = myController.text;
+//                  Dialogs.showLoadingDialog(context, _keyLoader);
+////                  putData();
+//                  // newValues.add(myController.text);
+//                  // print(newValues);
+//                  Navigator.of(context).pop();
+//                  // myController.clear();
+//                },
+//              )
+//            ],
+//          );
+//        });
+//  }
+
 }

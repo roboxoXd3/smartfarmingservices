@@ -18,3 +18,4 @@ const TrackFarm = "lib/src/Resources/Images/trackFarm.jpg";
 const TalkToExpert = "lib/src/Resources/Images/ExpertTalk.jpg";
 const Logout = "lib/src/Resources/Images/logout.png";
 const admin = "lib/src/Resources/Images/admin.png";
+const award = "lib/src/Resources/Images/award.png";

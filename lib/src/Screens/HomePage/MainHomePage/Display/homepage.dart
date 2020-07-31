@@ -1,18 +1,22 @@
-///This is the home page that is having bottom navigation drawer and in the other homepage the screen overlays will be shown.
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+///This is the home page that is having bottom navigation drawer and in the other homepage the screen overlays will be shown.
+import 'package:localization/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/services.dart';
-import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
+import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
-import 'package:smartfarmingservices/src/Screens/AdminPanel/Screen/AdminPanel.dart';
-import 'package:smartfarmingservices/src/Screens/CropCycle/Screen/ProductOverView.dart';
-import 'package:smartfarmingservices/src/Screens/CropCycle/cropCycleScreen.dart';
+import 'package:smartfarmingservices/src/Screens/CropCycle/CropInfoDisplay.dart';
 import 'package:smartfarmingservices/src/Screens/HomePage/DisplayHomePage/Screens/MyHomePage/MyHomePage.dart';
+import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
 import 'package:smartfarmingservices/src/Screens/MyStore/Screen/MyStoreContainerlayout.dart';
-import 'package:smartfarmingservices/src/Screens/NavigationDrawer/NavigationDrawer.dart';
-import 'package:smartfarmingservices/src/Screens/Sell/SellScreen.dart';
+
+import 'package:smartfarmingservices/src/Screens/ProfileScreen/profilePage.dart';
+
+import 'package:smartfarmingservices/src/Screens/Sell/SellScreenLayout.dart';
 
 import '../../DisplayHomePage/HomePageDisplayHolder/customContainer.dart';
 
@@ -31,6 +35,7 @@ class _HomepageState extends State<Homepage> {
   bool isCollapsed = true;
   double ScreenWidth;
   double ScreenHeight;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   List<TabItem> tabitem = List.of([
     new TabItem(Icons.home, "Home", Colors.green[700],
@@ -91,11 +96,182 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    ScreenWidth = MediaQuery.of(context).size.width;
-    ScreenHeight = MediaQuery.of(context).size.height;
     return WillPopScope(
       onWillPop: _onBackPressed,
       child: Scaffold(
+        drawer: Drawer(
+          child: Container(
+            decoration: BoxDecoration(color: Colors.grey[200]),
+            child: Column(
+              children: [
+                SizedBox(
+//              flex: 1,
+                  height: 250,
+
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                      );
+                    },
+                    child: DrawerHeader(
+                      child: Column(
+                        children: [
+                          ColorizeAnimatedTextKit(
+                            duration: Duration(seconds: 3),
+                            isRepeatingAnimation: false,
+                            text: ['Smart Farming Services'],
+                            textStyle: TextStyle(
+                              fontFamily: 'NotoSans',
+                              fontSize: 20,
+                            ),
+                            colors: [
+                              Color(0xff56ab2f),
+                              Color(0xfffffff),
+                              Colors.green
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Card(
+                                elevation: 10,
+                                shape: CircleBorder(),
+                                child: Container(
+                                  height: 100,
+                                  width: 100,
+                                  decoration: BoxDecoration(
+                                    gradient: kGradientColor,
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        image: AssetImage(profilepicture),
+                                        fit: BoxFit.cover),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Text(
+                                  "Roboxo",
+                                  style:
+                                      kTabBarProfileText.copyWith(fontSize: 30),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+//              flex: 2,
+                  child: ListView(
+                    children: [
+                      DrawerItems(
+                        icon: Icons.home,
+                        name: "Home",
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      DrawerItems(
+                        icon: Icons.info,
+                        name: "My Profile",
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfilePage()));
+                        },
+                      ),
+                      // DrawerItems(
+                      //   onTap: null,
+                      //   icon: Icons.add_shopping_cart,
+                      //   name: "My Orders",
+                      // ),
+                      DrawerItems(
+                        onTap: null,
+                        icon: Icons.language,
+                        name: "Language",
+                      ),
+                      DrawerItems(
+                        onTap: null,
+                        icon: Icons.live_help,
+                        name: "Expert",
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(left: 10),
+                  height: 50,
+//                width: screenwidth,
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        Logout,
+                        color: Colors.green,
+                        height: 30,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            child: AlertDialog(
+                              elevation: 10,
+                              title: Text(
+                                "Sure to Logout?",
+                                style:
+                                    kLabelStyle.copyWith(color: Colors.green),
+                              ),
+                              actions: [
+                                FlatButton(
+                                  color: Colors.green,
+                                  child: Text("Yes"),
+                                  onPressed: () {
+                                    _auth.signOut().whenComplete(
+                                      () {
+                                        Navigator.pop(context);
+                                        Navigator.pushNamed(
+                                            context, LoginScreen.id);
+                                      },
+                                    );
+                                  },
+                                ),
+                                FlatButton(
+                                  color: Colors.green,
+                                  child: Text("NO"),
+                                  onPressed: () =>
+                                      Navigator.pop(context, false),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        child: Text(
+                          " Logout",
+                          style: kTabBarProfileText.copyWith(
+                            fontSize: 30,
+                            color: Colors.green,
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+              ],
+            ),
+          ),
+        ),
         appBar: AppBar(
           title: Text(!isCollapsed
               ? "Navigation Drawer"
@@ -108,74 +284,24 @@ class _HomepageState extends State<Homepage> {
                           : (selectedPos == 3) ? "SellCrop" : "TrackFarm"),
           centerTitle: true,
           flexibleSpace: kAppBarContainer,
-          leading: (selectedPos == 0)
-              ? IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    setState(() {
-                      isCollapsed = !isCollapsed;
-                    });
-                  },
-                )
-              : IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return Homepage();
-                    }));
-                  },
-                ),
-//          InkWell(
-//            onTap: () {
-//              setState(() {
-//                isCollapsed = !isCollapsed;
-//              });
-//            },
-//            child: Icon(Icons.menu),
-//          ),
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: kExpert,
-//              child: InkWell(
-//                onTap: () {
-//                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-//                    return AdminPanel();
-//                  }));
-//                },
-//                child: Text("Admin Panel"),
-//              ),
             ),
           ],
         ),
         body: Container(
           child: Stack(
-            children: [
-              NavigationDrawer(),
-              HomePageDashBoard(context),
+            children: <Widget>[
+              Padding(
+                child: bodyContainer(),
+                padding: EdgeInsets.only(bottom: bottomNavBarHeight),
+              ),
+              Align(alignment: Alignment.bottomCenter, child: bottomNav()),
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget HomePageDashBoard(context) {
-    return AnimatedPositioned(
-      duration: duration,
-      top: isCollapsed ? 0 : 0.2 * ScreenHeight,
-      left: isCollapsed ? 0 : 0.6 * ScreenWidth,
-      right: isCollapsed ? 0 : -0.4 * ScreenWidth,
-      bottom: isCollapsed ? 0 : 0.1 * ScreenHeight,
-      child: Stack(
-        children: <Widget>[
-          Padding(
-            child: bodyContainer(),
-            padding: EdgeInsets.only(bottom: bottomNavBarHeight),
-          ),
-          Align(alignment: Alignment.bottomCenter, child: bottomNav()),
-        ],
       ),
     );
   }
@@ -196,8 +322,8 @@ class _HomepageState extends State<Homepage> {
       case 1:
         container = CustomContainer(
           container: Container(
-//            child: CropCycleDisplayScreen(),
-            child: ProductOverView(),
+//            child: CropCycleDisplay(),
+            child: CropInfoDisplay(),
           ),
         );
         break;
@@ -220,7 +346,7 @@ class _HomepageState extends State<Homepage> {
 //          text: 'SellCrop',
 //          appbarText: 'SellCrop',
           container: Container(
-            child: SellScreen(),
+            child: SellScreenLayout(),
           ),
         );
         break;
@@ -266,5 +392,50 @@ class _HomepageState extends State<Homepage> {
   void dispose() {
     super.dispose();
     _navigationController.dispose();
+  }
+}
+
+class DrawerItems extends StatelessWidget {
+  final String name;
+  final Function onTap;
+  final IconData icon;
+
+  const DrawerItems(
+      {Key key, @required this.name, @required this.onTap, @required this.icon})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Icon(icon),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        name,
+                        style: TextStyle(
+                            fontFamily: 'Varela',
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Icon(Icons.chevron_right),
+          ],
+        ),
+      ),
+      onTap: onTap,
+    );
   }
 }

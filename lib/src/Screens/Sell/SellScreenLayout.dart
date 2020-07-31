@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
+import 'package:smartfarmingservices/src/Screens/Sell/ItemDetailPage.dart';
 
 class SellScreenLayout extends StatefulWidget {
   @override
@@ -8,101 +9,91 @@ class SellScreenLayout extends StatefulWidget {
 }
 
 class _SellScreenLayoutState extends State<SellScreenLayout> {
-  String img = 'asset/images/plant.png';
-  List<String> Category = [
-    'Item1',
-    'Item2',
-    'Item3',
-    'Item4',
-    'Item5',
-    'Item6',
-    'Item7',
-    'Item8',
-    'Item9',
-  ];
-
-  List<String> CategoryImg = [
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-    'asset/images/fruitsImageItem.png',
-
-//    'asset/images/vegetableImageItem.png',
-//    'asset/images/barleyImageItem.png',
-//    'asset/images/fruitsImageItem.png',
-//    'asset/images/vegetableImageItem.png',
-//    'asset/images/barleyImageItem.png',
-//    'asset/images/fruitsImageItem.png',
-//    'asset/images/vegetableImageItem.png',
-//    'asset/images/barleyImageItem.png',
-//    'asset/images/fruitsImageItem.png',
-  ];
-
+  String Category = "Category";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      appBar: AppBar(
-//        elevation: 0.4,
-//        title: Text(
-//          'Sell Item',
-//          style: TextStyle(fontSize: 20, color: Colors.white),
-//        ),
-//        centerTitle: true,
-//        flexibleSpace: kAppBarContainer,
-//        actions: [
-//          Padding(
-//            padding: const EdgeInsets.all(8.0),
-//            child: kExpert,
-//          ),
-//        ],
-//      ),
-      body: Container(
-        child: GridView.builder(
-          itemCount: Category.length,
-//        padding: const EdgeInsets.all(20),
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-          itemBuilder: (context, position) {
-            return Center(
-              child: GestureDetector(
-                child: Card(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(16.0),
-                            child: Image.asset(CategoryImg[position]),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              child: Chip(
+                  label: Text(
+                "Categories",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontFamily: 'Varela',
+                  fontSize: 30,
+                ),
+              )),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.builder(
+                  itemCount: 6,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                  ),
+                  itemBuilder: (context, position) {
+                    return Center(
+                      child: GestureDetector(
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.black38),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              )),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color:
+                                          Colors.blueGrey[400].withOpacity(0.2),
+                                      image: DecorationImage(
+                                          image: NetworkImage(
+                                            "https://images.unsplash.com/photo-1472141521881-95d0e87e2e39?ixlib=rb-1."
+                                            "2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1504&q=80",
+                                          ),
+                                          fit: BoxFit.fill),
+                                      borderRadius: BorderRadius.all(
+                                        Radius.circular(20),
+                                      )),
+                                ),
+                              ),
+                              Text(Category)
+                            ],
                           ),
                         ),
-                        Text(Category[position])
-                      ],
-                    ),
-                  ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ItemDetailPage(
+                                        Category_store: Category,
+                                      )));
+                        },
+                      ),
+                    );
+                  },
                 ),
-                onTap: () {},
               ),
-            );
-          },
+            ),
+          ],
         ),
       ),
     );
-//    return SingleChildScrollView(
-//      child: Container(
-//        child: SingleChildScrollView(
-//          child: SizedBox(
-//            height: MediaQuery.of(context).size.height,
-//            child: ScrollView(
-//              child:
-//            ),
-//          ),
-//        ),
-//      ),
-//    );
   }
 }

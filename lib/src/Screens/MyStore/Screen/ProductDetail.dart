@@ -1,19 +1,77 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
+import 'package:http/http.dart' as http;
 
-class ItemDetail extends StatelessWidget {
-  static const String id = "Item_detail";
-//  final String name;
-//  final String imageUrl;
-//  final String price;
-//  final String productInfo;
+class ItemDetail extends StatefulWidget {
+  final String name;
+  final String Category;
+  final double Price;
+  final String Detail;
+  final String location;
+  final String rating;
+  final String image;
 
-//  const ItemDetail(
-//    this.name,
-//        this.imageUrl, this.price, this.productInfo
-//  );
+  const ItemDetail(
+      {Key key,
+      @required this.name,
+      @required this.Category,
+      @required this.Price,
+      @required this.Detail,
+      @required this.location,
+      @required this.rating,
+      @required this.image})
+      : super(key: key);
+  @override
+  _ItemDetailState createState() => _ItemDetailState();
+}
+
+class _ItemDetailState extends State<ItemDetail> {
+  List CropData;
+  String url = 'https://ee2cffc04751.ngrok.io/buyall';
+//  Future updateRating() async {
+//    final response =
+//        http.put('https://8d9f112d654f.ngrok.io/sell/${widget.name}',
+//            body: jsonEncode(<String, dynamic>{
+//              'Crop_name_store': widget.name,
+//              'Location_store': widget.location,
+//              'Detail_store': widget.Detail,
+//              'Cost_store': widget.Price,
+//              'Rating_store': widget.rating,
+//              'Category_store': widget.Category,
+//            }));
+//    print("Fetched response is:");
+//    print(response);
+//  }
+
+  double Rating;
+  List StoreData;
+  Future Item;
+
+  Future listCategory() async {
+    http.Response response;
+
+    response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        StoreData = json.decode(response.body);
+        print("Length of the list is: ${StoreData.length}");
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Item = listCategory();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     ///This will give us the id and this is the way we are using because we have passed id as an argument whenever we have navigated to this screen.
@@ -36,7 +94,7 @@ class ItemDetail extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        title: Text('name',
+        title: Text(widget.name,
             style: TextStyle(
                 fontFamily: 'Varela',
                 fontSize: 20.0,
@@ -65,7 +123,10 @@ class ItemDetail extends StatelessWidget {
                   borderOnForeground: true,
                   child: Column(
                     children: [
-                      Image.asset(Logo, fit: BoxFit.fill),
+                      Container(
+                          height: 400,
+                          width: MediaQuery.of(context).size.width,
+                          child: Image.network(widget.image, fit: BoxFit.fill)),
                       Align(
                         alignment: Alignment.bottomRight,
                         child: Padding(
@@ -108,7 +169,7 @@ class ItemDetail extends StatelessWidget {
                       Container(
 //                        margin: EdgeInsets.only(),
                         alignment: Alignment.centerLeft,
-                        child: Text('₹24200000',
+                        child: Text('₹' + widget.Price.toString(),
                             style: TextStyle(
                                 fontFamily: 'Varela',
                                 fontSize: 22.0,
@@ -119,9 +180,9 @@ class ItemDetail extends StatelessWidget {
                       Container(
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.only(left: 8),
-                        child: Text('SFT MEMBERSHIP',
+                        child: Text(widget.name.toString(),
                             style: TextStyle(
-                                color: Colors.green,
+                                color: Colors.green[800],
                                 fontFamily: 'Varela',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16.0)),
@@ -157,73 +218,85 @@ class ItemDetail extends StatelessWidget {
                         margin: EdgeInsets.only(bottom: 8),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Detail1:',
+                          widget.Detail,
                           style: TextStyle(
                             fontFamily: 'Varela',
                             fontSize: 15,
-//                        fontWeight: FontWeight.bold,
+//                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 8),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Detail2:',
-                          style: TextStyle(
-                            fontFamily: 'Varela',
-                            fontSize: 15,
-//                        fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 8),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Detail3:',
-                          style: TextStyle(
-                            fontFamily: 'Varela',
-                            fontSize: 15,
-//                        fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(bottom: 8),
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Detail4:',
-                          style: TextStyle(
-                            fontFamily: 'Varela',
-                            fontSize: 15,
-//                        fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: 8),
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                'Complete Detail',
-                                style: TextStyle(
-                                  fontFamily: 'Varela',
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Container(
-                                child: Icon(Icons.arrow_forward),
-                              )
-                            ],
-                          ),
-                        ),
-                        onTap: () {},
-                      ),
+//                      Container(
+//                        margin: EdgeInsets.only(bottom: 8),
+//                        alignment: Alignment.centerLeft,
+//                        child: Text(
+//                          'Detail1:',
+//                          style: TextStyle(
+//                            fontFamily: 'Varela',
+//                            fontSize: 15,
+////                        fontWeight: FontWeight.bold,
+//                          ),
+//                        ),
+//                      ),
+//                      Container(
+//                        margin: EdgeInsets.only(bottom: 8),
+//                        alignment: Alignment.centerLeft,
+//                        child: Text(
+//                          'Detail2:',
+//                          style: TextStyle(
+//                            fontFamily: 'Varela',
+//                            fontSize: 15,
+////                        fontWeight: FontWeight.bold,
+//                          ),
+//                        ),
+//                      ),
+//                      Container(
+//                        margin: EdgeInsets.only(bottom: 8),
+//                        alignment: Alignment.centerLeft,
+//                        child: Text(
+//                          'Detail3:',
+//                          style: TextStyle(
+//                            fontFamily: 'Varela',
+//                            fontSize: 15,
+////                        fontWeight: FontWeight.bold,
+//                          ),
+//                        ),
+//                      ),
+//                      Container(
+//                        margin: EdgeInsets.only(bottom: 8),
+//                        alignment: Alignment.centerLeft,
+//                        child: Text(
+//                          'Detail4:',
+//                          style: TextStyle(
+//                            fontFamily: 'Varela',
+//                            fontSize: 15,
+////                        fontWeight: FontWeight.bold,
+//                          ),
+//                        ),
+//                      ),
+//                      GestureDetector(
+//                        child: Container(
+//                          margin: EdgeInsets.only(bottom: 8),
+//                          alignment: Alignment.centerLeft,
+//                          child: Row(
+//                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                            children: <Widget>[
+//                              Text(
+//                                'Complete Detail',
+//                                style: TextStyle(
+//                                  fontFamily: 'Varela',
+//                                  fontSize: 15,
+//                                  fontWeight: FontWeight.bold,
+//                                ),
+//                              ),
+//                              Container(
+//                                child: Icon(Icons.arrow_forward),
+//                              )
+//                            ],
+//                          ),
+//                        ),
+//                        onTap: () {},
+//                      ),
                     ],
                   ),
                 ),
@@ -253,7 +326,7 @@ class ItemDetail extends StatelessWidget {
                       Container(
                         alignment: Alignment.center,
                         child: RatingBar(
-                          initialRating: 0,
+                          initialRating: double.parse(widget.rating),
                           minRating: 1,
                           direction: Axis.horizontal,
                           allowHalfRating: true,
@@ -264,30 +337,37 @@ class ItemDetail extends StatelessWidget {
                             color: Colors.amber,
                           ),
                           onRatingUpdate: (rating) {
-                            print(rating);
+                            Rating = rating;
 //                            isFilled = true;
                           },
                         ),
                       ),
-                      Material(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.green,
-                        elevation: 10,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.green,
-                          ),
-                          alignment: Alignment.center,
-                          height: 40,
-                          width: 120,
-                          child: Text(
-                            "Submit",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontFamily: 'Varela',
-                                fontSize: 25),
-                            textAlign: TextAlign.center,
+                      GestureDetector(
+                        onTap: () {
+//                          updateRating().whenComplete(() {
+//                            print("Rating has been updated");
+//                          });
+                        },
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.green,
+                          elevation: 10,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.green,
+                            ),
+                            alignment: Alignment.center,
+                            height: 40,
+                            width: 120,
+                            child: Text(
+                              "Submit",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Varela',
+                                  fontSize: 25),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),

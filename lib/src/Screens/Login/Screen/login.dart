@@ -8,22 +8,18 @@ import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 import 'package:smartfarmingservices/src/Screens/HomePage/MainHomePage/Display/homepage.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartfarmingservices/src/Screens/Signup/signup.dart';
 import 'package:validators/validators.dart' as validator;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-//class LoginScreen extends StatefulWidget {
-////  static const id = "Login_Screen";
-//
-//  @override
-//  _LoginScreenState createState() => _LoginScreenState();
-//}
+bool isLoading = false;
 
 class LoginScreen extends StatelessWidget {
   static const id = "login_screen";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +38,7 @@ class LoginScreen extends StatelessWidget {
                 image: DecorationImage(
                     image: AssetImage(ScreenBackGround), fit: BoxFit.fill)),
           ),
-          LoginForm()
+          LoginForm(),
         ],
       ),
     );
@@ -57,8 +53,12 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   String Email;
   String Password;
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  SharedPreferences preferences;
+  bool isLoading = false;
+  bool isLogedin = false;
+
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -185,11 +185,13 @@ class _LoginFormState extends State<LoginForm> {
 
             _firebaseAuth
                 .signInWithEmailAndPassword(email: Email, password: Password)
-                .then((user) {
+                .catchError((e) {
+              print(e);
+            }).then((user) {
               if (user != null) {
                 Navigator.pushNamed(context, Homepage.id);
               } else if (user == null) {
-                return CircularProgressIndicator();
+                return null;
               }
             });
           }
@@ -270,19 +272,6 @@ class _LoginFormState extends State<LoginForm> {
           ),
           _buildSocialBtn(
             () {
-//              _googleSignIn.signIn().then((user) {
-////                if (user != null) {
-////                  Navigator.pushNamed(context, Homepage.id);
-////                }
-//                user.authentication.then((googleKey) {
-//                FirebaseAuth.instance.
-//                }).catchError((onError) {
-//                  print(onError);
-//                });
-//              }).catchError((onError) {
-//                print(onError);
-//              });
-
               signInWithGoogle();
             },
             AssetImage(
@@ -373,32 +362,51 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Future<FirebaseUser> signInWithGoogle() async {
+    ///TODO:(Step:1) Creating a refrence for google signinaccount in order to use it further for google authentication
     final GoogleSignInAccount googleSignInAccount =
         await _googleSignIn.signIn();
+
+    ///TODO:(Step:2) Now using that refrence i.e, googleSignInAccount and use it for the authentication of the entered user, as it is availabe or not.
     final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount.authentication;
 
+    ///TODO:(Step:3) After the authentication has been received we save the credential of that user, ie., his id_token and his access_token
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       accessToken: googleSignInAuthentication.accessToken,
       idToken: googleSignInAuthentication.idToken,
     );
 
+    ///TODO:(Step:4) And when we have saved those credentials, we use it to signInWithCredential passing those credential and saving that output inside the authresult so we can actually access the info of that user and further show it on his profile we can also save that info inside firebase.
     final AuthResult authResult =
         await _firebaseAuth.signInWithCredential(credential);
+
+    ///TODO:(Step:5) With authResult variable we access the user and save this info inside the user.
     final FirebaseUser user = authResult.user;
 
+    ///TODO:(Step:6) And inside the variable currentUser we will save the info of the current signedin user by method provided by the firebase in the method currentUSer which we access with the FireBaseAuthentication refrence i.e., _firebaseAuth
     final FirebaseUser currentUser = await _firebaseAuth.currentUser();
+
+    ///TODO: (Step:7) From here we start saving the info inside the firestore.
     if (currentUser != null) {
+      ///TODO: (Step:8) [A QuerySnapshot contains the results of a query. It can contain zero or more DocumentSnapshot objects]. With the help of this only we create the collections inside the firestore.
       final QuerySnapshot result = await Firestore.instance
           .collection('users')
           .where("id", isEqualTo: currentUser.uid)
+
+          /// This is the id that we create in order to segregate each user from the other.
           .getDocuments();
+
+      /// It fetch document from that query and in this document we fetch the id that we created of the user.
+      ///After this we create a variable of type List<DocumentSnapshot> in order the save all and all info received from that document, when we fetched it.
       final List<DocumentSnapshot> document = result.documents;
+
+      ///Then after we check if the document is not created in the firestore i.e., the document length is 0, we create the instance of collection.
       if (document.length == 0) {
         Firestore.instance
             .collection('users')
             .document(currentUser.uid)
             .setData({
+          /// here then we setData i.e, we can say we push the data unto the firebase of the user info.
           'id': currentUser.uid,
           'username': currentUser.displayName,
           'profilePicture': currentUser.photoUrl

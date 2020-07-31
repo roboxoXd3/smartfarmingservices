@@ -1,22 +1,19 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Screens/HomePage/MainHomePage/Display/homepage.dart';
 import '../../Resources/Style/styles.dart';
 import 'package:validators/validators.dart' as validator;
 
-//class Signup extends StatefulWidget {
-//  static const id = "sign_up";
-//  @override
-//  _SignupState createState() => _SignupState();
-//}
-
 class Signup extends StatelessWidget {
   static const id = "sign_up";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +49,8 @@ class _SignUpFormState extends State<SignUpForm> {
   String Password;
   String Number;
   bool isObscure = false;
+  var signupError;
+  bool isError = false;
   FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   Widget _buildEmailTF() {
@@ -209,14 +208,7 @@ class _SignUpFormState extends State<SignUpForm> {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
-            _firebaseAuth
-                .createUserWithEmailAndPassword(
-                    email: Email, password: Password)
-                .then((user) {
-              if (user != null) {
-                Navigator.pushNamed(context, Homepage.id);
-              }
-            });
+            RegisterWithEmail();
           }
         },
         padding: EdgeInsets.all(15.0),
@@ -279,9 +271,63 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
             _buildPasswordTF(),
             _buildSignupBtn(),
+//            StreamBuilder(
+//                stream: signupError,
+//                builder: (context, snapshot) {
+//                  if (snapshot.hasData) {
+//                    return Container(
+//                      height: 40,
+//                      child: Text(snapshot.data[0].toString()),
+//                    );
+//                  } else {
+//                    return Container(
+//                      child: Text(
+//                        "Waiting for the request..",
+//                        style: kTabBarProfileText.copyWith(fontSize: 30),
+//                      ),
+//                    );
+//                  }
+//                }),
           ],
         ),
       ),
     );
+  }
+
+  Future<FirebaseUser> RegisterWithEmail() async {
+    _firebaseAuth
+        .createUserWithEmailAndPassword(
+      email: Email,
+      password: Password,
+    )
+        .catchError((Error) {
+      PlatformException error = Error;
+      signupError = error.toString();
+      print(signupError);
+    }).then((user) async {
+      if (user != null) {
+        final FirebaseUser currentUser = await _firebaseAuth.currentUser();
+
+        ///ye important hai babu
+        final QuerySnapshot result = await Firestore.instance
+            .collection('users')
+            .where("id", isEqualTo: currentUser.uid)
+            .getDocuments();
+
+        final List<DocumentSnapshot> document = result.documents;
+
+        if (document.length == 0) {
+          Firestore.instance
+              .collection('users')
+              .document(currentUser.uid)
+              .setData({
+            "Email": currentUser.email,
+            "number": Number,
+          });
+        }
+
+        Navigator.pushNamed(context, Homepage.id);
+      }
+    });
   }
 }

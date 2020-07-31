@@ -3,9 +3,10 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:smartfarmingservices/main.dart';
 import 'package:smartfarmingservices/src/Logic/LandingPage.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:ui';
 import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 import 'package:smartfarmingservices/src/Screens/HomePage/MainHomePage/Display/homepage.dart';
@@ -115,21 +116,18 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  void isSignedin() async {}
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
         if (snapshot.hasData) {
+//          preferences =  SharedPreferences.getInstance();
           return Homepage();
         } else {
           return LoginScreen();
         }
-//        if (!snapshot.hasData || snapshot.data == null) {
-//          return LoginScreen();
-//        } else {
-//          return Homepage();
-//        }
       },
     );
   }

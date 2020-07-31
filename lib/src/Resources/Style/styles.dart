@@ -84,12 +84,12 @@ final Color kPrimaryColor = Color(0xff13547a);
 final String kOverView =
     """ A potato is a root vegetable, the Solanum tuberosum. It is a small plant with large leaves. The part of the potato that people eat is a tuber that grows under the ground. A potato contains a lot of starch and other carbohydrates. """;
 final List<String> kGrowthCycle = [
-  'SPROUTING',
-  'VEGETATIVE',
-  'INITIATION',
-  'DEVELOPMENT',
-  'MATURE',
-  'DORMANT',
+//  'SPROUTING',
+//  'VEGETATIVE',
+//  'INITIATION',
+//  'DEVELOPMENT',
+//  'MATURE',
+//  'DORMANT',
 ];
 
 final List<String> kDiseases = [

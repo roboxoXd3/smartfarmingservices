@@ -1,12 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
-//import 'package:firebase_auth/firebase_auth.dart';
-import 'file:///D:/Study%20material/flutter/FreelanceProject/smartfarmingservices/lib/src/Screens/Login/Screen/login.dart';
+import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
+
 import 'AboutMe.dart';
 import 'ContactUs.dart';
 
@@ -246,6 +244,9 @@ class _ProfilePageState extends State<ProfilePage>
         ),
         FlatButton(
           child: Text("No"),
+          onPressed: () {
+            return null;
+          },
         )
       ],
     );

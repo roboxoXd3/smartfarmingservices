@@ -4,7 +4,7 @@ import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 import 'package:smartfarmingservices/src/Screens/HomePage/DisplayHomePage/Screens/MyHomePage/ReusableHeading.dart';
-import 'package:smartfarmingservices/src/Screens/NavigationDrawer/NavigationDrawer.dart';
+
 import 'Segments/Chart/ChartLayout.dart';
 import 'Segments/Newsfeed/newsfeedLayout.dart';
 import 'Segments/Services/Servicelayout.dart';
