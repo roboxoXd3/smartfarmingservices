@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 
-import 'package:http/http.dart';
+
 import 'package:smartfarmingservices/src/Screens/MyStore/Model/product.dart';
 import 'package:smartfarmingservices/src/Services/CropManager.dart';
 import 'package:smartfarmingservices/src/Services/httpServices.dart';

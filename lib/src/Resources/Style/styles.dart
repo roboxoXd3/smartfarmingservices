@@ -62,10 +62,7 @@ final Widget kAppBarContainer = Container(
 
 final Widget kExpert = GestureDetector(
   onTap: () {
-//    Navigator.push(
-//      context,
-//      MaterialPageRoute(builder: (context) => ExpertScreen()),
-//    );
+
   },
   child: Image.asset(
     expert,

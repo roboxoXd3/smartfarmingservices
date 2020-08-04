@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:smartfarmingservices/src/Screens/ChatApp/Model/User.dart';
 
 import 'package:smartfarmingservices/src/Screens/CropCycle/Model/crop_model.dart';
 import 'package:smartfarmingservices/src/Screens/MyStore/Model/product.dart';
@@ -24,5 +25,14 @@ class CropManager {
 
   Stream<List<Product>> filteredproductListView({query}) {
     return Stream.fromFuture(HttpServices.fetchItems(query: query));
+  }
+
+  Stream<List<User>> get userListView
+  {
+    return Stream.fromFuture(HttpServices.fetchUsers());
+  }
+
+  Stream<List<User>> filtereduserListView({query}) {
+    return Stream.fromFuture(HttpServices.fetchUsers(query: query));
   }
 }

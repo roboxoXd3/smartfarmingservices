@@ -47,8 +47,8 @@ class EachItemPage extends StatefulWidget {
 }
 
 class _EachItemPageState extends State<EachItemPage> {
-  final String url = "https://dc6bb3f05be3.ngrok.io/product";
-  final String postUrl = "https://dc6bb3f05be3.ngrok.io/crop";
+  final String url = "http://1f7f24cf9ee7.ngrok.io/product";
+  final String postUrl = "http://1f7f24cf9ee7.ngrok.io/crop";
 
   final myController = TextEditingController();
   List newValues = new List();

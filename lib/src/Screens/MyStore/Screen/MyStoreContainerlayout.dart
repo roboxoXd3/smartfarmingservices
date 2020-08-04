@@ -10,6 +10,7 @@ import 'package:smartfarmingservices/src/Screens/MyStore/Screen/ProductDetail.da
 import 'package:http/http.dart' as http;
 import 'package:smartfarmingservices/src/Services/CropManager.dart';
 import 'package:smartfarmingservices/src/Services/httpServices.dart';
+import 'package:smartfarmingservices/src/Widgets/CustomDropDown.dart';
 import '../Model/product.dart';
 import 'ProductSearch.dart';
 
@@ -20,6 +21,9 @@ class MyStoreContainerLayout extends StatefulWidget {
 
 class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
   CropManager _cropManager = CropManager();
+  List<String> filterParamenter = <String>[
+   ' Location'
+  ];
 //  List StoreData;
 //  Future Category;
 //  String url = "http://dc6bb3f05be3.ngrok.io";
@@ -57,39 +61,76 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                 (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
               if (snapshot.hasData) {
                 List<Product> productList = snapshot.data;
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Padding(
+                return Column(
+//                  scrollDirection: Axis.vertical,
+                  children: [
+//                    Expanded(
+//                      flex: 1,
+//                      child: CustomDropdown(text: "Filter",),
+//                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
+                        child: InkWell(
                           onTap: () {
                             showSearch(
                                 context: context, delegate: ProductSearch());
                           },
-                          child: Container(
-                            height: 60,
-                            decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black38),
-                                borderRadius:
+                          child: Stack(
+                            children: [
+                              Container(
+                                height: 60,
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black38),
+                                    borderRadius:
                                     BorderRadius.all(Radius.circular(20))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text("Search"),
-                                  Icon(Icons.search),
-                                ],
+                                    children: [
+                                      Text("Search"),
+//                                      Icon(Icons.search),
+                                    ],
+                                  ),
+                                ),
                               ),
-                            ),
+//                              Positioned(
+//                                bottom: 0,
+//                                right: 10,
+//                                top: 0,
+//                                child: DropdownButton(
+//                                  items: filterParamenter.map((e) {
+//                                    DropdownMenuItem(
+//                                      value: e,
+//                                      child: Row(
+//                                        children: [
+//                                          Text(e),
+//                                          Icon(Icons.location_on),
+//                                        ],
+//                                      ),
+//                                    );
+//                                  }).toList(),
+//                                  onChanged: (selectedAccountType)
+//                                  {
+//                                    selectedAccountType=
+//                                  },
+//                                ),
+//
+//                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Container(
+                    ),
+                    Expanded(
+                      flex: 8,
+                      child: Container(
                         height: MediaQuery.of(context).size.height,
                         child: ListView.builder(
+//                            physics: NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           itemCount: productList.length,
                           itemBuilder: (BuildContext context, int index) {
@@ -100,7 +141,7 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                     .push(MaterialPageRoute(builder: (context) {
                                   return ItemDetail(
                                     image:
-                                        "${HttpServices.itemsUrl}/${buyProduct.Crop_name_store}/image",
+                                    "${HttpServices.itemsUrl}/${buyProduct.Crop_name_store}/image",
                                     name: buyProduct.Crop_name_store.toString()
                                         .toUpperCase(),
                                     location: buyProduct.Location_store,
@@ -120,7 +161,7 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                       color: Colors.white,
                                     ),
                                     height:
-                                        MediaQuery.of(context).size.height / 6,
+                                    MediaQuery.of(context).size.height / 6,
                                     width: MediaQuery.of(context).size.width,
                                     child: Row(
                                       children: <Widget>[
@@ -140,21 +181,21 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                               .size
                                               .height,
                                           width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
+                                              .size
+                                              .width /
                                               2.5,
                                         ),
                                         Expanded(
                                           child: Container(
                                             decoration:
-                                                BoxDecoration(boxShadow: [
+                                            BoxDecoration(boxShadow: [
                                               BoxShadow(
                                                 color: Colors.grey[100],
                                               )
                                             ]),
                                             child: Column(
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                              MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
                                                   "₹" +
@@ -176,17 +217,17 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                                       fontFamily: 'Varela',
                                                       fontSize: 20,
                                                       fontStyle:
-                                                          FontStyle.normal,
+                                                      FontStyle.normal,
                                                       fontWeight:
-                                                          FontWeight.bold),
+                                                      FontWeight.bold),
                                                 ),
                                                 SizedBox(
                                                   height: 20,
                                                 ),
                                                 Padding(
                                                   padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8.0),
+                                                  const EdgeInsets.only(
+                                                      left: 8.0),
                                                   child: Container(
                                                     child: Text(
                                                       buyProduct.Location_store,
@@ -194,11 +235,11 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                                         fontFamily: 'OpenSans',
                                                         fontSize: 14,
                                                         fontStyle:
-                                                            FontStyle.normal,
+                                                        FontStyle.normal,
                                                       ),
                                                     ),
                                                     alignment:
-                                                        Alignment.bottomCenter,
+                                                    Alignment.bottomCenter,
                                                   ),
                                                 ),
                                               ],
@@ -214,8 +255,8 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                           },
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
               } else {
                 return Center(

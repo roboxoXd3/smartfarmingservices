@@ -9,6 +9,8 @@ import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/services.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
+import 'package:smartfarmingservices/src/Screens/ChatApp/pages/ContactsPage.dart';
+import 'package:smartfarmingservices/src/Screens/ChatApp/pages/conversationPageList.dart';
 import 'package:smartfarmingservices/src/Screens/CropCycle/CropInfoDisplay.dart';
 import 'package:smartfarmingservices/src/Screens/HomePage/DisplayHomePage/Screens/MyHomePage/MyHomePage.dart';
 import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
@@ -17,6 +19,7 @@ import 'package:smartfarmingservices/src/Screens/MyStore/Screen/MyStoreContainer
 import 'package:smartfarmingservices/src/Screens/ProfileScreen/profilePage.dart';
 
 import 'package:smartfarmingservices/src/Screens/Sell/SellScreenLayout.dart';
+import 'package:smartfarmingservices/src/Widgets/widgets.dart';
 
 import '../../DisplayHomePage/HomePageDisplayHolder/customContainer.dart';
 
@@ -104,10 +107,8 @@ class _HomepageState extends State<Homepage> {
             decoration: BoxDecoration(color: Colors.grey[200]),
             child: Column(
               children: [
-                SizedBox(
-//              flex: 1,
-                  height: 250,
-
+                Expanded(
+                  flex: 2,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -168,7 +169,7 @@ class _HomepageState extends State<Homepage> {
                   ),
                 ),
                 Expanded(
-//              flex: 2,
+              flex: 3,
                   child: ListView(
                     children: [
                       DrawerItems(
@@ -283,11 +284,23 @@ class _HomepageState extends State<Homepage> {
                           ? "MyStore"
                           : (selectedPos == 3) ? "SellCrop" : "TrackFarm"),
           centerTitle: true,
+//          bottom: (selectedPos == 2)?SearchContainer():null,
           flexibleSpace: kAppBarContainer,
           actions: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: kExpert,
+              child: InkWell(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ContactsPage()),
+                  );
+                },
+                child: Image.asset(
+                  expert,
+
+                ),
+              ),
             ),
           ],
         ),

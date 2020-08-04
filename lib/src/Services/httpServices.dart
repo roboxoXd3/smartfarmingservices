@@ -1,15 +1,35 @@
 import 'package:dio/dio.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:smartfarmingservices/src/Screens/ChatApp/Model/User.dart';
 import 'dart:convert';
 
 import 'package:smartfarmingservices/src/Screens/CropCycle/Model/crop_model.dart';
 import 'package:smartfarmingservices/src/Screens/MyStore/Model/product.dart';
 
 class HttpServices {
-  static String url = "http://ad8c657b0937.ngrok.io/product";
-  final String postUrl = "http://ad8c657b0937.ngrok.io/crop";
-  static String itemsUrl = "http://ad8c657b0937.ngrok.io/buy";
+  static String url = "http://532b4b57e21a.ngrok.io/product";
+  final String postUrl = "http://532b4b57e21a.ngrok.io/crop";
+  static String itemsUrl = "http://532b4b57e21a.ngrok.io/buy";
+  static String userUrl = "https://jsonplaceholder.typicode.com/users";
+
+
+  static Future<List<User>> fetchUsers({query}) async {
+
+
+
+    http.Response res = await http.get(userUrl);
+    ///res.body se content k andr wo long string aa gyi jo ki ek list h lekin abi b usko dart m use krne k liye decode krna pdega;
+    String content = res.body;
+    ///yha hm decode b kr rhe aur save b kr rhe ek local List k andr.
+    List collection = json.decode(content);
+    Iterable<User> _users = collection.map((e) => User.fromjson(e));
+    if(query!=null && query.isNotEmpty)
+      {
+        _users = _users.where((element) => element.name.toLowerCase().contains(query));
+      }
+    return _users.toList();
+  }
 
   static Future<List<CropModel>> fetchCrops({query}) async {
     http.Response res = await http.get(url);
@@ -41,6 +61,6 @@ class HttpServices {
 }
 
 void main() async {
-  List result = await HttpServices.fetchItems();
+  List result = await HttpServices.fetchUsers();
   print(result);
 }
