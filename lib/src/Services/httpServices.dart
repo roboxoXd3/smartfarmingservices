@@ -8,35 +8,21 @@ import 'package:smartfarmingservices/src/Screens/CropCycle/Model/crop_model.dart
 import 'package:smartfarmingservices/src/Screens/MyStore/Model/product.dart';
 
 class HttpServices {
-  static String url = "http://532b4b57e21a.ngrok.io/product";
-  final String postUrl = "http://532b4b57e21a.ngrok.io/crop";
-  static String itemsUrl = "http://532b4b57e21a.ngrok.io/buy";
+  static String baseUrl = "https://sftservices.herokuapp.com/";
+  static String getProductList = baseUrl+"product";
+  static final String postUrl = baseUrl+"crop";
+  static String itemsUrl = baseUrl+"buy";
+
   static String userUrl = "https://jsonplaceholder.typicode.com/users";
 
 
-  static Future<List<User>> fetchUsers({query}) async {
-
-
-
-    http.Response res = await http.get(userUrl);
-    ///res.body se content k andr wo long string aa gyi jo ki ek list h lekin abi b usko dart m use krne k liye decode krna pdega;
-    String content = res.body;
-    ///yha hm decode b kr rhe aur save b kr rhe ek local List k andr.
-    List collection = json.decode(content);
-    Iterable<User> _users = collection.map((e) => User.fromjson(e));
-    if(query!=null && query.isNotEmpty)
-      {
-        _users = _users.where((element) => element.name.toLowerCase().contains(query));
-      }
-    return _users.toList();
-  }
 
   static Future<List<CropModel>> fetchCrops({query}) async {
-    http.Response res = await http.get(url);
+    http.Response res = await http.get(getProductList);
 
+    await Future.delayed(Duration(seconds: 1));
     String content = res.body;
     List collection = json.decode(content);
-
     Iterable<CropModel> _crops = collection.map((e) => CropModel.fromJson(e));
     if (query != null && query.isNotEmpty) {
       _crops = _crops
@@ -44,6 +30,23 @@ class HttpServices {
     }
     return _crops.toList();
   }
+
+  static Future<List<User>> fetchUsers({query}) async {
+    http.Response res = await http.get(userUrl);
+
+    ///res.body se content k andr wo long string aa gyi jo ki ek list h lekin abi b usko dart m use krne k liye decode krna pdega;
+    String content = res.body;
+
+    ///yha hm decode b kr rhe aur save b kr rhe ek local List k andr.
+    List collection = json.decode(content);
+    Iterable<User> _users = collection.map((e) => User.fromjson(e));
+    if (query != null && query.isNotEmpty) {
+      _users =
+          _users.where((element) => element.name.toLowerCase().contains(query));
+    }
+    return _users.toList();
+  }
+
 
   static Future<List<Product>> fetchItems({query}) async {
     http.Response res = await http.get(itemsUrl);

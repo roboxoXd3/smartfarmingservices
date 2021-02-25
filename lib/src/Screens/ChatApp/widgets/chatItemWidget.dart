@@ -24,7 +24,7 @@ class ChatItemWidget extends StatelessWidget {
                   color: Palette.selfMessageBackgroundColor,
                   borderRadius: BorderRadius.circular(8.0)),
               margin: EdgeInsets.only(right: 10.0),
-            )
+            ),
           ],
           mainAxisAlignment:
               MainAxisAlignment.end, // aligns the chatitem to right end

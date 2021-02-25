@@ -75,7 +75,7 @@ class CropSearch extends SearchDelegate {
                                   ConfirmAction.values[1].toString()) {
                                 Response response;
                                 response = await delete(
-                                        "${HttpServices.url}/${cropsList[index].Crop_name}")
+                                        "${HttpServices.getProductList}/${cropsList[index].Crop_name}")
                                     .whenComplete(() {
                                   showSnackBar();
                                 });
@@ -87,7 +87,7 @@ class CropSearch extends SearchDelegate {
                                 return EachItemPage(
                                   name: cropsList[index].Crop_name,
                                   images:
-                                      "${HttpServices.url}/${cropsList[index].Crop_name}/image",
+                                      "${HttpServices.getProductList}/${cropsList[index].Crop_name}/image",
                                 );
                               }));
                             },
@@ -95,7 +95,7 @@ class CropSearch extends SearchDelegate {
                               padding: const EdgeInsets.all(8.0),
                               child: GridTile(
                                 child: Image.network(
-                                  "${HttpServices.url}/${cropsList[index].Crop_name}/image",
+                                  "${HttpServices.getProductList}/${cropsList[index].Crop_name}/image",
                                   fit: BoxFit.cover,
                                 ),
                                 footer: Container(

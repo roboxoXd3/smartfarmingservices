@@ -1,16 +1,12 @@
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:loading_animations/loading_animations.dart';
-
 import 'package:smartfarmingservices/src/Screens/MyStore/Screen/ProductDetail.dart';
-
-import 'package:http/http.dart' as http;
 import 'package:smartfarmingservices/src/Services/CropManager.dart';
 import 'package:smartfarmingservices/src/Services/httpServices.dart';
-import 'package:smartfarmingservices/src/Widgets/CustomDropDown.dart';
+
 import '../Model/product.dart';
 import 'ProductSearch.dart';
 
@@ -24,26 +20,6 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
   List<String> filterParamenter = <String>[
    ' Location'
   ];
-//  List StoreData;
-//  Future Category;
-//  String url = "http://dc6bb3f05be3.ngrok.io";
-//  Future listCategory() async {
-//    http.Response response;
-//
-//    response = await http.get("${url}/buyall");
-////    imageResponse =
-////        await http.get("http://7f4171c9ed33.ngrok.io/product/orange/image");
-//
-//    if (response.statusCode == 200) {
-//      setState(() {
-//        StoreData = json.decode(response.body);
-//        print("Length of the list is: ${StoreData.length}");
-////        for (int i = 0; i < CropData.length; i++) {
-//////          categoryName.add(CropData[i]['Category']);
-////        }
-//      });
-//    }
-//  }
 
   @override
   void initState() {
@@ -62,12 +38,7 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
               if (snapshot.hasData) {
                 List<Product> productList = snapshot.data;
                 return Column(
-//                  scrollDirection: Axis.vertical,
                   children: [
-//                    Expanded(
-//                      flex: 1,
-//                      child: CustomDropdown(text: "Filter",),
-//                    ),
                     Expanded(
                       flex: 1,
                       child: Padding(
@@ -97,29 +68,7 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                   ),
                                 ),
                               ),
-//                              Positioned(
-//                                bottom: 0,
-//                                right: 10,
-//                                top: 0,
-//                                child: DropdownButton(
-//                                  items: filterParamenter.map((e) {
-//                                    DropdownMenuItem(
-//                                      value: e,
-//                                      child: Row(
-//                                        children: [
-//                                          Text(e),
-//                                          Icon(Icons.location_on),
-//                                        ],
-//                                      ),
-//                                    );
-//                                  }).toList(),
-//                                  onChanged: (selectedAccountType)
-//                                  {
-//                                    selectedAccountType=
-//                                  },
-//                                ),
-//
-//                              ),
+
                             ],
                           ),
                         ),
@@ -290,29 +239,3 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
             }));
   }
 }
-//Center(
-//child: Container(
-//child: Center(
-//child: Column(
-//mainAxisAlignment: MainAxisAlignment.center,
-//children: [
-//LoadingBouncingGrid.square(
-//backgroundColor: Colors.green,
-//size: 80,
-//),
-//SizedBox(
-//height: 20,
-//),
-//Text(
-//"Fetching Data, thanks for your patience.",
-//textAlign: TextAlign.center,
-//style: TextStyle(
-//fontWeight: FontWeight.bold,
-//fontSize: 25,
-//fontFamily: 'Varela',
-//color: Colors.green),
-//)
-//],
-//),
-//)))
-//    :

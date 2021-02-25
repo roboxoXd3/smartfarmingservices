@@ -39,27 +39,10 @@ class CropModel {
   double Total_productivity;
 // ignore: non_constant_identifier_names
   double Urea;
+  // ignore: non_constant_identifier_names
+  double Potash;
 
-//  CropModel(
-//    this.Area_of_farm,
-//  this.Average_market_rates,
-//  this.Category, this.Crop_cycle,
-//  this.Crop_name, this.Humidity,
-//  this.Investment_cost,
-//  this.Location,
-//  this.Moisture,
-//   this.Nitrogen,
-//   this.Overview,
-//   this.Ph_value,
-//   this.Phosphorus,
-//    this.Possible_disease,
-//     this.Production_Cost,
-//      this.Seed_Sown,
-//      this.Temperature,
-//      this.Total_productivity,
-//       this.Urea,
-//       this.Image,
-//       );
+
 
   CropModel.fromJson(Map<String, dynamic> parsedJson) {
     Area_of_farm = parsedJson['Area_of_farm'];
@@ -99,5 +82,7 @@ class CropModel {
     Total_productivity = parsedJson['Total_productivity'];
 // ignore: non_constant_identifier_names
     Urea = parsedJson['Urea'];
+
+    Potash = parsedJson['Potash'];
   }
 }

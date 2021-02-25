@@ -1,12 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:smartfarmingservices/src/Screens/HomePage/MainHomePage/Display/homepage.dart';
 import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
-import 'package:smartfarmingservices/src/Screens/MyStore/Screen/ProductDetail.dart';
+// import 'package:smartfarmingservices/src/Screens/MyStore/Screen/ProductDetail.dart';
 import 'package:smartfarmingservices/src/Screens/Signup/signup.dart';
 import 'src/Screens/Splash/SplashScreen.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 void main() {
   runApp(MyApp());
 }
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
 //      color: Colors.green,
+    builder: EasyLoading.init(),
       title: 'Smart Farming',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

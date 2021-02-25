@@ -2,7 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 ///This is the home page that is having bottom navigation drawer and in the other homepage the screen overlays will be shown.
-import 'package:localization/localization.dart';
+
 import 'package:flutter/material.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
@@ -10,16 +10,14 @@ import 'package:flutter/services.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 import 'package:smartfarmingservices/src/Screens/ChatApp/pages/ContactsPage.dart';
-import 'package:smartfarmingservices/src/Screens/ChatApp/pages/conversationPageList.dart';
 import 'package:smartfarmingservices/src/Screens/CropCycle/CropInfoDisplay.dart';
-import 'package:smartfarmingservices/src/Screens/HomePage/DisplayHomePage/Screens/MyHomePage/MyHomePage.dart';
+import 'package:smartfarmingservices/src/Screens/HomePage/DisplayHomePage/Screens/MyHomePage/Segments/DashBoard.dart';
 import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
 import 'package:smartfarmingservices/src/Screens/MyStore/Screen/MyStoreContainerlayout.dart';
 
 import 'package:smartfarmingservices/src/Screens/ProfileScreen/profilePage.dart';
 
 import 'package:smartfarmingservices/src/Screens/Sell/SellScreenLayout.dart';
-import 'package:smartfarmingservices/src/Widgets/widgets.dart';
 
 import '../../DisplayHomePage/HomePageDisplayHolder/customContainer.dart';
 
@@ -45,9 +43,6 @@ class _HomepageState extends State<Homepage> {
         labelStyle:
             TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
     new TabItem(Icons.loop, "Cropcycle", Colors.green[700],
-//        labelStyle:
-//            TextStyle(color: Colors.black38, fontWeight: FontWeight.bold)),
-//    new TabItem(Icons.contact_phone, "Expert", Colors.green[800],
         labelStyle:
             TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
     new TabItem(Icons.shopping_cart, "MyStore", Colors.green[700],
@@ -104,11 +99,18 @@ class _HomepageState extends State<Homepage> {
       child: Scaffold(
         drawer: Drawer(
           child: Container(
-            decoration: BoxDecoration(color: Colors.grey[200]),
+            decoration: BoxDecoration(color: Colors.white),
             child: Column(
               children: [
+                Material(
+                  elevation: 10,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 15,
+                    decoration: BoxDecoration(gradient: kGradientColor),
+                  ),
+                ),
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -116,60 +118,65 @@ class _HomepageState extends State<Homepage> {
                         MaterialPageRoute(builder: (context) => ProfilePage()),
                       );
                     },
-                    child: DrawerHeader(
-                      child: Column(
-                        children: [
-                          ColorizeAnimatedTextKit(
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          child: ColorizeAnimatedTextKit(
                             duration: Duration(seconds: 3),
                             isRepeatingAnimation: false,
                             text: ['Smart Farming Services'],
                             textStyle: TextStyle(
-                              fontFamily: 'NotoSans',
-                              fontSize: 20,
-                            ),
+                                fontFamily: 'Lemonanda',
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
                             colors: [
+                              Colors.green[800],
                               Color(0xff56ab2f),
                               Color(0xfffffff),
-                              Colors.green
+                              Colors.green[800]
                             ],
                           ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Card(
-                                elevation: 10,
-                                shape: CircleBorder(),
-                                child: Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    gradient: kGradientColor,
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: AssetImage(profilepicture),
-                                        fit: BoxFit.cover),
-                                  ),
+                        ),
+                        SizedBox(height: 20),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Card(
+                              elevation: 10,
+                              shape: CircleBorder(),
+                              child: Container(
+                                height: 100,
+                                width: 100,
+                                decoration: BoxDecoration(
+                                  gradient: kGradientColor,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: AssetImage(profilepicture),
+                                      fit: BoxFit.cover),
                                 ),
                               ),
-                              Container(
-                                child: Text(
-                                  "Roboxo",
-                                  style:
-                                      kTabBarProfileText.copyWith(fontSize: 30),
-                                ),
+                            ),
+                            Container(
+                              child: Text(
+                                "Roboxo",
+                                style:
+                                    kTabBarProfileText.copyWith(fontSize: 30),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ),
+                Divider(
+                  height: 20,
+                  color: Colors.black12,
+                  thickness: 2,
+                ),
                 Expanded(
-              flex: 3,
+                  flex: 4,
                   child: ListView(
                     children: [
                       DrawerItems(
@@ -190,11 +197,6 @@ class _HomepageState extends State<Homepage> {
                                   builder: (context) => ProfilePage()));
                         },
                       ),
-                      // DrawerItems(
-                      //   onTap: null,
-                      //   icon: Icons.add_shopping_cart,
-                      //   name: "My Orders",
-                      // ),
                       DrawerItems(
                         onTap: null,
                         icon: Icons.language,
@@ -208,15 +210,19 @@ class _HomepageState extends State<Homepage> {
                     ],
                   ),
                 ),
+                Divider(
+                  height: 20,
+                  color: Colors.black12,
+                  thickness: 2,
+                ),
                 Container(
                   padding: EdgeInsets.only(left: 10),
                   height: 50,
-//                width: screenwidth,
                   child: Row(
                     children: [
                       Image.asset(
                         Logout,
-                        color: Colors.green,
+                        color: Colors.black,
                         height: 30,
                       ),
                       GestureDetector(
@@ -258,7 +264,7 @@ class _HomepageState extends State<Homepage> {
                           " Logout",
                           style: kTabBarProfileText.copyWith(
                             fontSize: 30,
-                            color: Colors.green,
+                            color: Colors.black,
                           ),
                           textAlign: TextAlign.left,
                         ),
@@ -274,15 +280,18 @@ class _HomepageState extends State<Homepage> {
           ),
         ),
         appBar: AppBar(
-          title: Text(!isCollapsed
-              ? "Navigation Drawer"
-              : (selectedPos == 0)
-                  ? 'HomePage'
-                  : (selectedPos == 1)
-                      ? "CropCycle"
-                      : (selectedPos == 2)
-                          ? "MyStore"
-                          : (selectedPos == 3) ? "SellCrop" : "TrackFarm"),
+          title: Text(
+            !isCollapsed
+                ? "Navigation Drawer"
+                : (selectedPos == 0)
+                    ? 'HomePage'
+                    : (selectedPos == 1)
+                        ? "CropCycle"
+                        : (selectedPos == 2)
+                            ? "MyStore"
+                            : (selectedPos == 3) ? "SellCrop" : "TrackFarm",
+            style: TextStyle(fontFamily: 'Varela', fontWeight: FontWeight.w600),
+          ),
           centerTitle: true,
 //          bottom: (selectedPos == 2)?SearchContainer():null,
           flexibleSpace: kAppBarContainer,
@@ -290,7 +299,7 @@ class _HomepageState extends State<Homepage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ContactsPage()),
@@ -298,7 +307,6 @@ class _HomepageState extends State<Homepage> {
                 },
                 child: Image.asset(
                   expert,
-
                 ),
               ),
             ),
@@ -328,36 +336,25 @@ class _HomepageState extends State<Homepage> {
       case 0:
         container = CustomContainer(
           container: Container(
-            child: MyHomePage(),
+            child: DashBoard(),
           ),
         );
         break;
       case 1:
         container = CustomContainer(
           container: Container(
-//            child: CropCycleDisplay(),
             child: CropInfoDisplay(),
           ),
         );
         break;
-//      case 2:
-//        // slogan = "Receive, Review, Rip";
-//        container = CustomContainer(
-////          text: 'Expert',
-//          appbarText: 'Expert',
-//        );
-//        break;
+
       case 2:
         container = CustomContainer(
-//          text: 'MyStore',
-//          appbarText: 'MyStore',
           container: Container(child: MyStoreContainerLayout()),
         );
         break;
       case 3:
         container = CustomContainer(
-//          text: 'SellCrop',
-//          appbarText: 'SellCrop',
           container: Container(
             child: SellScreenLayout(),
           ),
@@ -395,7 +392,6 @@ class _HomepageState extends State<Homepage> {
       selectedCallback: (int selectedPos) {
         setState(() {
           this.selectedPos = selectedPos;
-//          print(_navigationController.value);
         });
       },
     );
@@ -427,17 +423,20 @@ class DrawerItems extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Icon(icon),
+                Icon(
+                  icon,
+                  color: Colors.green[800],
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
                       Text(
                         name,
-                        style: TextStyle(
-                            fontFamily: 'Varela',
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500),
+                        style: kLabelStyle.copyWith(
+                            color: Colors.green[800],
+                            fontSize: 20,
+                            fontFamily: 'Lemonanda'),
                       ),
                     ],
                   ),

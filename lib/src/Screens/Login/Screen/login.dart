@@ -173,13 +173,13 @@ class _LoginFormState extends State<LoginForm> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              });
+//          showDialog(
+//              context: context,
+//              builder: (BuildContext context) {
+//                return Center(
+//                  child: CircularProgressIndicator(),
+//                );
+//              });
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
@@ -272,7 +272,12 @@ class _LoginFormState extends State<LoginForm> {
           ),
           _buildSocialBtn(
             () {
-              signInWithGoogle();
+              signInWithGoogle().then((user) {
+                if(user!=null)
+                  {
+                    Navigator.pushNamed(context, Homepage.id);
+                  }
+              });
             },
             AssetImage(
               google,

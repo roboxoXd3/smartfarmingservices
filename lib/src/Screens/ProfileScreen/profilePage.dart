@@ -138,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage>
             flex: 3,
             child: Container(
               child: DefaultTabController(
-                length: 6,
+                length: 7,
                 child: Column(
                   children: [
                     Container(
@@ -159,6 +159,13 @@ class _ProfilePageState extends State<ProfilePage>
                                 style: kTabBarProfileText,
                               ),
                             ),
+                            Container(
+                              child: Text(
+                                'My Advertisments',
+                                style: kTabBarProfileText,
+                              ),
+                            ),
+
                             Container(
                               child: Text(
                                 'My Refrence Code',
@@ -198,9 +205,15 @@ class _ProfilePageState extends State<ProfilePage>
                           ),
                           Center(
                             child: Container(
+                              child: Text('MY ADDS'),
+                            ),
+                          ),
+                          Center(
+                            child: Container(
                               child: Text('MY REFRENCE CODE'),
                             ),
                           ),
+
                           Center(
                             child: Container(
                               child: Text('MY ANSWERS'),
@@ -252,3 +265,4 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 }
+

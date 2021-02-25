@@ -11,12 +11,13 @@ class ConversationPageList extends StatefulWidget {
 class _ConversationPageListState extends State<ConversationPageList> {
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      children: [
-        ConversationPage(),
-        ConversationPage(),
-        ConversationPage(),
-      ],
-    );
+    return  ConversationPage();
+//    return PageView(
+//      children: [
+//        ConversationPage(),
+//        ConversationPage(),
+//        ConversationPage(),
+//      ],
+//    );
   }
 }

@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
+//import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 import 'package:http/http.dart' as http;
+import 'package:smartfarmingservices/src/Screens/MyStore/Screen/Kart.dart';
 
 class ItemDetail extends StatefulWidget {
   final String name;
@@ -32,21 +33,8 @@ class ItemDetail extends StatefulWidget {
 
 class _ItemDetailState extends State<ItemDetail> {
   List CropData;
-  String url = 'https://ee2cffc04751.ngrok.io/buyall';
-//  Future updateRating() async {
-//    final response =
-//        http.put('https://8d9f112d654f.ngrok.io/sell/${widget.name}',
-//            body: jsonEncode(<String, dynamic>{
-//              'Crop_name_store': widget.name,
-//              'Location_store': widget.location,
-//              'Detail_store': widget.Detail,
-//              'Cost_store': widget.Price,
-//              'Rating_store': widget.rating,
-//              'Category_store': widget.Category,
-//            }));
-//    print("Fetched response is:");
-//    print(response);
-//  }
+  String url = 'http://c74aa16897a3.ngrok.io/buy';
+
 
   double Rating;
   List StoreData;
@@ -103,7 +91,14 @@ class _ItemDetailState extends State<ItemDetail> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.shopping_cart, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(
+                builder: (context)
+                    {
+                      return Kart();
+                    }
+              ));
+            },
           ),
         ],
       ),
@@ -143,8 +138,21 @@ class _ItemDetailState extends State<ItemDetail> {
                                     borderRadius: BorderRadius.circular(50),
 //                                gradient: kGradientColor,
                                     color: Colors.green),
-                                child: Icon(
-                                  Icons.add_shopping_cart,
+                                child: IconButton(
+                                  icon:Icon(Icons.add_shopping_cart),
+                                  onPressed: (){
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (context)
+                                        {
+                                          return Kart(
+                                            image: widget.image,
+                                            location: widget.location,
+                                            name: widget.name,
+                                            Price: widget.Price,
+                                          );
+                                        }
+                                    ));
+                                  },
                                   color: Colors.black,
                                 ),
                               ),
@@ -226,77 +234,7 @@ class _ItemDetailState extends State<ItemDetail> {
                           ),
                         ),
                       ),
-//                      Container(
-//                        margin: EdgeInsets.only(bottom: 8),
-//                        alignment: Alignment.centerLeft,
-//                        child: Text(
-//                          'Detail1:',
-//                          style: TextStyle(
-//                            fontFamily: 'Varela',
-//                            fontSize: 15,
-////                        fontWeight: FontWeight.bold,
-//                          ),
-//                        ),
-//                      ),
-//                      Container(
-//                        margin: EdgeInsets.only(bottom: 8),
-//                        alignment: Alignment.centerLeft,
-//                        child: Text(
-//                          'Detail2:',
-//                          style: TextStyle(
-//                            fontFamily: 'Varela',
-//                            fontSize: 15,
-////                        fontWeight: FontWeight.bold,
-//                          ),
-//                        ),
-//                      ),
-//                      Container(
-//                        margin: EdgeInsets.only(bottom: 8),
-//                        alignment: Alignment.centerLeft,
-//                        child: Text(
-//                          'Detail3:',
-//                          style: TextStyle(
-//                            fontFamily: 'Varela',
-//                            fontSize: 15,
-////                        fontWeight: FontWeight.bold,
-//                          ),
-//                        ),
-//                      ),
-//                      Container(
-//                        margin: EdgeInsets.only(bottom: 8),
-//                        alignment: Alignment.centerLeft,
-//                        child: Text(
-//                          'Detail4:',
-//                          style: TextStyle(
-//                            fontFamily: 'Varela',
-//                            fontSize: 15,
-////                        fontWeight: FontWeight.bold,
-//                          ),
-//                        ),
-//                      ),
-//                      GestureDetector(
-//                        child: Container(
-//                          margin: EdgeInsets.only(bottom: 8),
-//                          alignment: Alignment.centerLeft,
-//                          child: Row(
-//                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                            children: <Widget>[
-//                              Text(
-//                                'Complete Detail',
-//                                style: TextStyle(
-//                                  fontFamily: 'Varela',
-//                                  fontSize: 15,
-//                                  fontWeight: FontWeight.bold,
-//                                ),
-//                              ),
-//                              Container(
-//                                child: Icon(Icons.arrow_forward),
-//                              )
-//                            ],
-//                          ),
-//                        ),
-//                        onTap: () {},
-//                      ),
+
                     ],
                   ),
                 ),
