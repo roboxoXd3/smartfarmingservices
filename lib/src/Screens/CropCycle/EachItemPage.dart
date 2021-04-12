@@ -3,11 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 import 'package:smartfarmingservices/src/Services/httpServices.dart';
-
-
 class EachItemPage extends StatefulWidget {
   String name;
   String images;
@@ -47,28 +44,13 @@ class _EachItemPageState extends State<EachItemPage> {
   void initState() {
     super.initState();
     category = listCategory();
-//    downloadFile();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //     "${widget.name.toString().toUpperCase()}",
-      //     style: kTextStyleCrop.copyWith(color: Colors.white, fontSize: 20),
-      //   ),
-      //   centerTitle: true,
-      //   backgroundColor: Color(0xff147474),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: () {
-      //
-      //       },
-      //       icon: Icon(Icons.sort),
-      //     ),
-      //   ],
-      // ),
+
       body: FutureBuilder(
           future: category,
           builder: (context, snapshot) {
@@ -170,6 +152,8 @@ class _EachItemPageState extends State<EachItemPage> {
                                       Text(
                                         value['Overview'].toString(),
                                         maxLines: 6,
+
+                                        overflow: TextOverflow.ellipsis,
                                       )
                                     ],
                                   ),
@@ -575,32 +559,6 @@ class _EachItemPageState extends State<EachItemPage> {
     );
   }
 
-//  displayDialog(BuildContext context) async {
-//    return showDialog(
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//            title: Text('Enter the new Value'),
-//            content: TextField(
-//              // controller: myController,
-//              decoration: InputDecoration(hintText: "Enter Value here"),
-//            ),
-//            actions: <Widget>[
-//              new FlatButton(
-//                child: new Text('SUBMIT'),
-//                onPressed: () {
-//                  widget.name = myController.text;
-//                  Dialogs.showLoadingDialog(context, _keyLoader);
-////                  putData();
-//                  // newValues.add(myController.text);
-//                  // print(newValues);
-//                  Navigator.of(context).pop();
-//                  // myController.clear();
-//                },
-//              )
-//            ],
-//          );
-//        });
-//  }
+
 
 }

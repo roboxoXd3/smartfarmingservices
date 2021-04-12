@@ -70,7 +70,7 @@ class _HomepageState extends State<Homepage> {
   Future<bool> _onBackPressed() {
     return showDialog(
       context: context,
-      child: AlertDialog(
+      builder: (_)=>AlertDialog(
         elevation: 10,
         title: Text(
           "Exiting So Soon?",
@@ -229,7 +229,7 @@ class _HomepageState extends State<Homepage> {
                         onTap: () {
                           showDialog(
                             context: context,
-                            child: AlertDialog(
+                            builder: (_)=>AlertDialog(
                               elevation: 10,
                               title: Text(
                                 "Sure to Logout?",
@@ -289,7 +289,9 @@ class _HomepageState extends State<Homepage> {
                         ? "CropCycle"
                         : (selectedPos == 2)
                             ? "MyStore"
-                            : (selectedPos == 3) ? "SellCrop" : "TrackFarm",
+                            : (selectedPos == 3)
+                                ? "SellCrop"
+                                : "TrackFarm",
             style: TextStyle(fontFamily: 'Varela', fontWeight: FontWeight.w600),
           ),
           centerTitle: true,
