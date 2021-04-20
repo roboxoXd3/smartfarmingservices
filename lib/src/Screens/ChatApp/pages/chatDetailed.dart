@@ -406,7 +406,7 @@ class _ChatDetailedState extends State<ChatDetailed> {
                     : Center(
                         child: CircularProgressIndicator(
                           valueColor: new AlwaysStoppedAnimation(
-                            Color(0xff56ab2f),
+                            isMe ? Color(0xff56ab2f) : Color(0xffa8e063),
                           ),
                         ),
                       ),
