@@ -1,5 +1,4 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 ///This is the home page that is having bottom navigation drawer and in the other homepage the screen overlays will be shown.
 
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/services.dart';
+import 'package:smartfarmingservices/src/Model/User.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 import 'package:smartfarmingservices/src/Screens/ChatApp/pages/ContactsPage.dart';
@@ -18,11 +18,15 @@ import 'package:smartfarmingservices/src/Screens/MyStore/Screen/MyStoreContainer
 import 'package:smartfarmingservices/src/Screens/ProfileScreen/profilePage.dart';
 
 import 'package:smartfarmingservices/src/Screens/Sell/SellScreenLayout.dart';
+import 'package:smartfarmingservices/src/Services/Auth.dart';
 
 import '../../DisplayHomePage/HomePageDisplayHolder/customContainer.dart';
 
 class Homepage extends StatefulWidget {
   static const id = "home_page";
+
+  final User user;
+  const Homepage({Key key, this.user}) : super(key: key);
 
   @override
   _HomepageState createState() => _HomepageState();
@@ -36,7 +40,6 @@ class _HomepageState extends State<Homepage> {
   bool isCollapsed = true;
   double ScreenWidth;
   double ScreenHeight;
-  FirebaseAuth _auth = FirebaseAuth.instance;
 
   List<TabItem> tabitem = List.of([
     new TabItem(Icons.home, "Home", Colors.green[700],
@@ -70,7 +73,7 @@ class _HomepageState extends State<Homepage> {
   Future<bool> _onBackPressed() {
     return showDialog(
       context: context,
-      builder: (_)=>AlertDialog(
+      builder: (_) => AlertDialog(
         elevation: 10,
         title: Text(
           "Exiting So Soon?",
@@ -115,7 +118,10 @@ class _HomepageState extends State<Homepage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                        MaterialPageRoute(
+                            builder: (context) => ProfilePage(
+                                  user: widget.user,
+                                )),
                       );
                     },
                     child: Column(
@@ -152,14 +158,16 @@ class _HomepageState extends State<Homepage> {
                                   gradient: kGradientColor,
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
-                                      image: AssetImage(profilepicture),
+                                      image: widget.user.photo == null
+                                          ? AssetImage(profilepicture)
+                                          : NetworkImage(widget.user.photo),
                                       fit: BoxFit.cover),
                                 ),
                               ),
                             ),
                             Container(
                               child: Text(
-                                "Roboxo",
+                                widget.user.name,
                                 style:
                                     kTabBarProfileText.copyWith(fontSize: 30),
                               ),
@@ -194,7 +202,8 @@ class _HomepageState extends State<Homepage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProfilePage()));
+                                  builder: (context) =>
+                                      ProfilePage(user: widget.user)));
                         },
                       ),
                       DrawerItems(
@@ -229,7 +238,7 @@ class _HomepageState extends State<Homepage> {
                         onTap: () {
                           showDialog(
                             context: context,
-                            builder: (_)=>AlertDialog(
+                            builder: (_) => AlertDialog(
                               elevation: 10,
                               title: Text(
                                 "Sure to Logout?",
@@ -241,13 +250,10 @@ class _HomepageState extends State<Homepage> {
                                   color: Colors.green,
                                   child: Text("Yes"),
                                   onPressed: () {
-                                    _auth.signOut().whenComplete(
-                                      () {
-                                        Navigator.pop(context);
-                                        Navigator.pushNamed(
-                                            context, LoginScreen.id);
-                                      },
-                                    );
+                                    authService.signOut();
+                                    Navigator.pop(context);
+                                    Navigator.pushNamed(
+                                        context, LoginScreen.id);
                                   },
                                 ),
                                 FlatButton(
@@ -304,7 +310,11 @@ class _HomepageState extends State<Homepage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ContactsPage()),
+                    MaterialPageRoute(
+                      builder: (context) => ContactsPage(
+                        user: widget.user,
+                      ),
+                    ),
                   );
                 },
                 child: Image.asset(
@@ -338,7 +348,7 @@ class _HomepageState extends State<Homepage> {
       case 0:
         container = CustomContainer(
           container: Container(
-            child: DashBoard(),
+            child: DashBoard(user: widget.user),
           ),
         );
         break;

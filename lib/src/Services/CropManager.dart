@@ -27,8 +27,7 @@ class CropManager {
     return Stream.fromFuture(HttpServices.fetchItems(query: query));
   }
 
-  Stream<List<User>> get userListView
-  {
+  Stream<List<User>> get userListView {
     return Stream.fromFuture(HttpServices.fetchUsers());
   }
 

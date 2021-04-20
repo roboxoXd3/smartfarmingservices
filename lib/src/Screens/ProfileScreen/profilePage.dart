@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:smartfarmingservices/src/Model/User.dart';
 import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
@@ -9,6 +10,9 @@ import 'AboutMe.dart';
 import 'ContactUs.dart';
 
 class ProfilePage extends StatefulWidget {
+  final User user;
+
+  const ProfilePage({Key key, this.user}) : super(key: key);
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -64,7 +68,9 @@ class _ProfilePageState extends State<ProfilePage>
               Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(profilepicture),
+                    image: widget.user.photo == null
+                        ? AssetImage(profilepicture)
+                        : NetworkImage(widget.user.photo),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -86,13 +92,15 @@ class _ProfilePageState extends State<ProfilePage>
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
-                          image: AssetImage(profilepicture),
+                          image: widget.user.photo == null
+                              ? AssetImage(profilepicture)
+                              : NetworkImage(widget.user.photo),
                           fit: BoxFit.fill,
                         ),
                       ),
                     ),
                     Text(
-                      kProfilename,
+                      widget.user.name,
                       style: TextStyle(
                           fontSize: 30.0,
                           fontFamily: 'Varela',
@@ -100,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage>
                           color: Colors.white),
                     ),
                     Text(
-                      kProfilenumber,
+                      widget.user.phone ?? kProfilenumber,
                       style: TextStyle(
                           fontSize: 20.0,
                           fontFamily: 'Varela',
@@ -165,7 +173,6 @@ class _ProfilePageState extends State<ProfilePage>
                                 style: kTabBarProfileText,
                               ),
                             ),
-
                             Container(
                               child: Text(
                                 'My Refrence Code',
@@ -213,7 +220,6 @@ class _ProfilePageState extends State<ProfilePage>
                               child: Text('MY REFRENCE CODE'),
                             ),
                           ),
-
                           Center(
                             child: Container(
                               child: Text('MY ANSWERS'),
@@ -265,4 +271,3 @@ class _ProfilePageState extends State<ProfilePage>
     );
   }
 }
-

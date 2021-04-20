@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
-import 'package:smartfarmingservices/src/Screens/ChatApp/Model/User.dart';
+import 'package:smartfarmingservices/src/Model/User.dart';
 import 'package:smartfarmingservices/src/Services/CropManager.dart';
 
 

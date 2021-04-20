@@ -13,6 +13,7 @@ import 'package:smartfarmingservices/src/Screens/HomePage/MainHomePage/Display/h
 import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:smartfarmingservices/src/Services/GetPermission.dart';
+import 'package:smartfarmingservices/src/Services/OfflineStore.dart';
 
 import '../../Resources/ImageLink/ImageLink.dart';
 
@@ -34,9 +35,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     startTime();
     setState(() {});
   }
@@ -119,15 +118,22 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  void isSignedin() async {}
+  OfflineStorage offlineStorage = new OfflineStorage();
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseAuth.instance.onAuthStateChanged,
-      builder: (context, AsyncSnapshot<FirebaseUser> snapshot) {
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
         if (snapshot.hasData) {
 //          preferences =  SharedPreferences.getInstance();
-          return Homepage();
+          return FutureBuilder(
+            future: offlineStorage.getUserInfo(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData && snapshot.data != null) return Homepage(user: snapshot.data);
+              return Center(child: CircularProgressIndicator());
+            },
+          );
         } else {
           return LoginScreen();
         }

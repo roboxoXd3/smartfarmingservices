@@ -35,7 +35,6 @@ class _ItemDetailState extends State<ItemDetail> {
   List CropData;
   String url = 'http://c74aa16897a3.ngrok.io/buy';
 
-
   double Rating;
   List StoreData;
   Future Item;
@@ -92,12 +91,9 @@ class _ItemDetailState extends State<ItemDetail> {
           IconButton(
             icon: Icon(Icons.shopping_cart, color: Colors.black),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context)
-                    {
-                      return Kart();
-                    }
-              ));
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return Kart();
+              }));
             },
           ),
         ],
@@ -139,19 +135,17 @@ class _ItemDetailState extends State<ItemDetail> {
 //                                gradient: kGradientColor,
                                     color: Colors.green),
                                 child: IconButton(
-                                  icon:Icon(Icons.add_shopping_cart),
-                                  onPressed: (){
-                                    Navigator.push(context, MaterialPageRoute(
-                                        builder: (context)
-                                        {
-                                          return Kart(
-                                            image: widget.image,
-                                            location: widget.location,
-                                            name: widget.name,
-                                            Price: widget.Price,
-                                          );
-                                        }
-                                    ));
+                                  icon: Icon(Icons.add_shopping_cart),
+                                  onPressed: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return Kart(
+                                        image: widget.image,
+                                        location: widget.location,
+                                        name: widget.name,
+                                        Price: widget.Price,
+                                      );
+                                    }));
                                   },
                                   color: Colors.black,
                                 ),
@@ -234,7 +228,6 @@ class _ItemDetailState extends State<ItemDetail> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -270,10 +263,11 @@ class _ItemDetailState extends State<ItemDetail> {
                           allowHalfRating: true,
                           itemCount: 5,
                           itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
+                          //Temporarily commenting.. as per discussed with Rishav
+                          // itemBuilder: (context, _) => Icon(
+                          //   Icons.star,
+                          //   color: Colors.amber,
+                          // ),
                           onRatingUpdate: (rating) {
                             Rating = rating;
 //                            isFilled = true;

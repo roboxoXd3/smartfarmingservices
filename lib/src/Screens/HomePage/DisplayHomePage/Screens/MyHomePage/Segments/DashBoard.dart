@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:smartfarmingservices/src/Model/User.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 // import 'package:smartfarmingservices/src/Services/GetPermission.dart';
@@ -7,6 +8,9 @@ import 'Newsfeed/newsfeedLayout.dart';
 import 'Services/Servicelayout.dart';
 
 class DashBoard extends StatefulWidget {
+  final User user;
+
+  const DashBoard({Key key, this.user}) : super(key: key);
   @override
   _DashBoardState createState() => _DashBoardState();
 }
@@ -14,7 +18,6 @@ class DashBoard extends StatefulWidget {
 class _DashBoardState extends State<DashBoard> {
   AnimationController animationController;
   Animation<double> animation;
-  String name = "Rishav";
   Position currentPosition;
   double latitude;
   double longitude;
@@ -95,7 +98,7 @@ class _DashBoardState extends State<DashBoard> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              "Hi, $name",
+                              "Hi, " + widget.user.name.split(' ')[0],
                               style: TextStyle(
                                 fontSize: 25,
                                 color: Colors.white,
@@ -127,7 +130,9 @@ class _DashBoardState extends State<DashBoard> {
                               gradient: kGradientColor,
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: AssetImage(profilepicture),
+                                  image: widget.user.photo == null
+                                      ? AssetImage(profilepicture)
+                                      : NetworkImage(widget.user.photo),
                                   fit: BoxFit.cover),
                             ),
                           ),

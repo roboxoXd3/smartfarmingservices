@@ -11,6 +11,8 @@ import 'package:smartfarmingservices/src/Screens/HomePage/MainHomePage/Display/h
 import '../../Resources/Style/styles.dart';
 import 'package:validators/validators.dart' as validator;
 
+import 'package:smartfarmingservices/src/Services/Auth.dart';
+
 class Signup extends StatelessWidget {
   static const id = "sign_up";
 
@@ -45,14 +47,61 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  String Email;
-  String Password;
-  String Number;
+  String email;
+  String password;
+  String phone;
+  String name;
   bool isObscure = false;
   var signupError;
   bool isError = false;
-  FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
+
+  Widget _buildNameTF() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Name',
+          style: kLabelStyle,
+        ),
+        SizedBox(height: 10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextFormField(
+            validator: (String name) {
+              if (!validator.isLength(name, 4, 20)) {
+                return "Enter a valid Name";
+              }
+              return null;
+            },
+            onSaved: (value) {
+              setState(() {
+                name = value;
+              });
+            },
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(
+              color: Colors.white,
+              fontFamily: 'OpenSans',
+            ),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(
+                Icons.email,
+                color: Colors.white,
+              ),
+              hintText: 'Enter your Name',
+              hintStyle: kHintTextStyle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildEmailTF() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +124,7 @@ class _SignUpFormState extends State<SignUpForm> {
             },
             onSaved: (value) {
               setState(() {
-                Email = value;
+                email = value;
               });
             },
             keyboardType: TextInputType.emailAddress,
@@ -122,7 +171,7 @@ class _SignUpFormState extends State<SignUpForm> {
             },
             onSaved: (value) {
               setState(() {
-                Password = value;
+                password = value;
               });
             },
             obscureText: isObscure ? true : false,
@@ -175,7 +224,7 @@ class _SignUpFormState extends State<SignUpForm> {
             },
             onSaved: (value) {
               setState(() {
-                Number = value;
+                phone = value;
               });
             },
             style: TextStyle(
@@ -204,11 +253,12 @@ class _SignUpFormState extends State<SignUpForm> {
       width: double.infinity,
       child: RaisedButton(
         elevation: 5.0,
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-
-            RegisterWithEmail();
+            await authService.registerWithEmail(
+                email: email, password: password, phone: phone, name: name);
+            Navigator.pushNamed(context, Homepage.id);
           }
         },
         padding: EdgeInsets.all(15.0),
@@ -261,14 +311,12 @@ class _SignUpFormState extends State<SignUpForm> {
               ),
             ),
             SizedBox(height: 30.0),
+            _buildNameTF(),
+            SizedBox(height: 30.0),
             _buildEmailTF(),
-            SizedBox(
-              height: 30.0,
-            ),
+            SizedBox(height: 30.0),
             _buildNumberTF(),
-            SizedBox(
-              height: 30.0,
-            ),
+            SizedBox(height: 30.0),
             _buildPasswordTF(),
             _buildSignupBtn(),
 //            StreamBuilder(
@@ -292,42 +340,5 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
       ),
     );
-  }
-
-  Future<FirebaseUser> RegisterWithEmail() async {
-    _firebaseAuth
-        .createUserWithEmailAndPassword(
-      email: Email,
-      password: Password,
-    )
-        .catchError((Error) {
-      PlatformException error = Error;
-      signupError = error.toString();
-      print(signupError);
-    }).then((user) async {
-      if (user != null) {
-        final FirebaseUser currentUser = await _firebaseAuth.currentUser();
-
-        ///ye important hai babu
-        final QuerySnapshot result = await Firestore.instance
-            .collection('users')
-            .where("id", isEqualTo: currentUser.uid)
-            .getDocuments();
-
-        final List<DocumentSnapshot> document = result.documents;
-
-        if (document.length == 0) {
-          Firestore.instance
-              .collection('users')
-              .document(currentUser.uid)
-              .setData({
-            "Email": currentUser.email,
-            "number": Number,
-          });
-        }
-
-        Navigator.pushNamed(context, Homepage.id);
-      }
-    });
   }
 }
