@@ -61,7 +61,19 @@ class AuthService {
     return userObject;
   }
 
-  registerWithEmail({
+  Future<UserModel.User> signInWithEmail({@required String email, @required String password}) async {
+    UserCredential userCred = await _auth.signInWithEmailAndPassword(
+        email: email, password: password).onError((error, stackTrace) => null);
+    User registeredUser = userCred.user;
+    DatabaseHelper databaseHelper = new DatabaseHelper();
+    DocumentSnapshot userDoc =
+        await databaseHelper.getUserByUsername(registeredUser.uid);
+    UserModel.User userObject = new UserModel.User.fromMap(userDoc.data());
+    await offlineStorage.saveUserInfo(userObject);
+    return userObject;
+  }
+
+  Future<UserModel.User> registerWithEmail({
     @required String email,
     @required String password,
     @required String phone,
@@ -74,6 +86,7 @@ class AuthService {
         uid: registeredUser.uid, name: name, email: email, phone: phone);
     await offlineStorage.saveUserInfo(user);
     saveUserData(user);
+    return user;
   }
 
   void saveUserData(UserModel.User user) async {

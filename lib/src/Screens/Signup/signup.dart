@@ -256,8 +256,20 @@ class _SignUpFormState extends State<SignUpForm> {
         onPressed: () async {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            await authService.registerWithEmail(
-                email: email, password: password, phone: phone, name: name);
+            authService
+                .registerWithEmail(
+                    email: email, password: password, phone: phone, name: name)
+                .then((user) {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Homepage(
+                    user: user,
+                  ),
+                ),
+              );
+            });
             Navigator.pushNamed(context, Homepage.id);
           }
         },

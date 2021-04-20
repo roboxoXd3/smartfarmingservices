@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animations/loading_animations.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
-import 'package:smartfarmingservices/src/Model/User.dart';
+import 'package:smartfarmingservices/src/Screens/ChatApp/Model/User.dart';
 import 'package:smartfarmingservices/src/Services/CropManager.dart';
 
-
-class UserSearch extends SearchDelegate{
-
+class UserSearch extends SearchDelegate {
   CropManager manager = CropManager();
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -35,65 +33,52 @@ class UserSearch extends SearchDelegate{
   @override
   Widget buildResults(BuildContext context) {
     // TODO: implement buildResults
-    if(query.length<3)
-      {
-        return Center(child: Text("$query + must be great than 3"),);
-      }
-    else if(query.length>3){
+    if (query.length < 3) {
+      return Center(
+        child: Text("$query + must be great than 3"),
+      );
+    } else if (query.length > 3) {
       return StreamBuilder(
           stream: manager.filtereduserListView(query: query),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+          builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
             if (snapshot.hasData) {
               List<User> expertList = snapshot.data;
               return Container(
                 height: MediaQuery.of(context).size.height,
                 child: ListView.builder(
-
                   scrollDirection: Axis.vertical,
                   itemCount: expertList.length,
                   itemBuilder: (BuildContext context, int index) {
                     User expert = expertList[index];
                     return GestureDetector(
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                       child: Padding(
                         padding: const EdgeInsets.all(4.0),
                         child: Card(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30)),
                           child: Container(
                             decoration: BoxDecoration(
                                 color: Colors.red,
-                                borderRadius: BorderRadius.circular(30)
-                            ),
-
+                                borderRadius: BorderRadius.circular(30)),
                             width: MediaQuery.of(context).size.width,
                             child: Stack(
-
                               children: <Widget>[
-
                                 Container(
                                   padding: EdgeInsets.only(right: 30),
-                                  decoration:
-                                  BoxDecoration(
+                                  decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(30),
                                       boxShadow: [
                                         BoxShadow(
                                           color: Colors.grey[300],
-
                                         ),
-
                                       ]),
                                   child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.end,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Text(
-
-                                        expert.email.toString()
-                                        ,
+                                        expert.email.toString(),
                                         style: TextStyle(
                                           fontFamily: 'Varela',
                                           fontSize: 20,
@@ -104,35 +89,29 @@ class UserSearch extends SearchDelegate{
                                         height: 5,
                                       ),
                                       Text(
-                                        expert.name.toString()
-                                            .toUpperCase(),
+                                        expert.name.toString().toUpperCase(),
                                         style: TextStyle(
                                             fontFamily: 'Varela',
                                             fontSize: 20,
-                                            fontStyle:
-                                            FontStyle.normal,
-                                            fontWeight:
-                                            FontWeight.bold),
+                                            fontStyle: FontStyle.normal,
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(
                                         height: 5,
                                       ),
                                       Padding(
                                         padding:
-                                        const EdgeInsets.only(
-                                            left: 8.0),
+                                            const EdgeInsets.only(left: 8.0),
                                         child: Container(
                                           child: Text(
                                             expert.phone.toString(),
                                             style: TextStyle(
                                               fontFamily: 'OpenSans',
                                               fontSize: 14,
-                                              fontStyle:
-                                              FontStyle.normal,
+                                              fontStyle: FontStyle.normal,
                                             ),
                                           ),
-                                          alignment:
-                                          Alignment.bottomRight,
+                                          alignment: Alignment.bottomRight,
                                         ),
                                       ),
                                     ],
@@ -142,7 +121,7 @@ class UserSearch extends SearchDelegate{
                                   left: 5,
                                   top: 5,
                                   bottom: 5,
-                                  child:Container(
+                                  child: Container(
 //                                            height: 30,
                                     decoration: new BoxDecoration(
                                         borderRadius: BorderRadius.circular(50),
@@ -150,7 +129,6 @@ class UserSearch extends SearchDelegate{
                                           fit: BoxFit.cover,
                                           image: new AssetImage(
                                             profilepicture,
-
                                           ),
 //                                                "${HttpServices.itemsUrl}/${expert.}/image"),
                                         ),
@@ -159,13 +137,9 @@ class UserSearch extends SearchDelegate{
                                             color: Colors.white10,
                                           )
                                         ]),
-                                    height: MediaQuery.of(context)
-                                        .size
-                                        .height,
-                                    width: MediaQuery.of(context)
-                                        .size
-                                        .width /
-                                        5,
+                                    height: MediaQuery.of(context).size.height,
+                                    width:
+                                        MediaQuery.of(context).size.width / 5,
                                   ),
                                 ),
                               ],
@@ -207,9 +181,10 @@ class UserSearch extends SearchDelegate{
               );
             }
           });
-    }
-    else{
-      return Center(child: Text("No search found of this name"),);
+    } else {
+      return Center(
+        child: Text("No search found of this name"),
+      );
     }
   }
 
@@ -218,5 +193,4 @@ class UserSearch extends SearchDelegate{
     // TODO: implement buildSuggestions
     return Container();
   }
-
 }

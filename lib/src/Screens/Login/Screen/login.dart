@@ -185,16 +185,20 @@ class _LoginFormState extends State<LoginForm> {
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
-            _firebaseAuth
-                .signInWithEmailAndPassword(email: Email, password: Password)
+            authService
+                .signInWithEmail(email: Email, password: Password)
                 .catchError((e) {
               print(e);
             }).then((user) {
-              if (user != null) {
-                Navigator.pushNamed(context, Homepage.id);
-              } else if (user == null) {
-                return null;
-              }
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Homepage(
+                    user: user,
+                  ),
+                ),
+              );
             });
           }
         },
