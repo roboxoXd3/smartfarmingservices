@@ -1,10 +1,8 @@
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lottie/lottie.dart';
 
 import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
@@ -15,6 +13,7 @@ import 'package:validators/validators.dart' as validator;
 
 import 'package:smartfarmingservices/src/Services/Auth.dart';
 import 'package:smartfarmingservices/src/Model/User.dart' as UserModel;
+import 'package:lottie/lottie.dart';
 
 class Signup extends StatelessWidget {
   static const id = "sign_up";
@@ -324,8 +323,10 @@ class _SignUpFormState extends State<SignUpForm> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * .4,
                   height: MediaQuery.of(context).size.width * .4,
-                  child: Lottie.asset('lib/src/Resources/failed.json',
-                      animate: true),
+                  child: Lottie.asset(
+                    'lib/src/Resources/failed.json',
+                    animate: true,
+                  ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .5 >
@@ -384,8 +385,10 @@ class _SignUpFormState extends State<SignUpForm> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * .4,
                     height: MediaQuery.of(context).size.width * .4,
-                    child: Lottie.asset('lib/src/Resources/success.json',
-                        animate: true),
+                    child: Lottie.asset(
+                      'lib/src/Resources/success.json',
+                      animate: true,
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.width * .1,
@@ -446,13 +449,6 @@ class _SignUpFormState extends State<SignUpForm> {
           );
         });
 
-  showSnackPlz(BuildContext context, String text) {
-    final SnackBar snackMe = SnackBar(
-      content: Text(text),
-    );
-    _scaffKey.currentState.showSnackBar(snackMe);
-  }
-
   Widget _buildLoadingWidget() => Center(
         child: CircularProgressIndicator(
           valueColor: new AlwaysStoppedAnimation(
@@ -461,67 +457,63 @@ class _SignUpFormState extends State<SignUpForm> {
         ),
       );
 
-  final _scaffKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffKey,
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          physics: AlwaysScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(
-            horizontal: 40.0,
-            //                    vertical: 120.0,
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Hero(
-                tag: 'logo',
-                child: Container(
-                  margin: EdgeInsets.only(
-                    top: MediaQuery.of(context).size.height / 20,
-                  ),
-                  height: 200,
-                  width: 200,
-                  decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                      fit: BoxFit.fill,
-                      image: new AssetImage(sft),
-                    ),
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        physics: AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(
+          horizontal: 40.0,
+          //                    vertical: 120.0,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Hero(
+              tag: 'logo',
+              child: Container(
+                margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height / 20,
+                ),
+                height: 200,
+                width: 200,
+                decoration: new BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: new DecorationImage(
+                    fit: BoxFit.fill,
+                    image: new AssetImage(sft),
                   ),
                 ),
               ),
-              SizedBox(height: 30.0),
-              _buildNameTF(),
-              SizedBox(height: 30.0),
-              _buildEmailTF(),
-              SizedBox(height: 30.0),
-              _buildNumberTF(),
-              SizedBox(height: 30.0),
-              _buildPasswordTF(),
-              _buildSignupBtn(),
-              //            StreamBuilder(
-              //                stream: signupError,
-              //                builder: (context, snapshot) {
-              //                  if (snapshot.hasData) {
-              //                    return Container(
-              //                      height: 40,
-              //                      child: Text(snapshot.data[0].toString()),
-              //                    );
-              //                  } else {
-              //                    return Container(
-              //                      child: Text(
-              //                        "Waiting for the request..",
-              //                        style: kTabBarProfileText.copyWith(fontSize: 30),
-              //                      ),
-              //                    );
-              //                  }
-              //                }),
-            ],
-          ),
+            ),
+            SizedBox(height: 30.0),
+            _buildNameTF(),
+            SizedBox(height: 30.0),
+            _buildEmailTF(),
+            SizedBox(height: 30.0),
+            _buildNumberTF(),
+            SizedBox(height: 30.0),
+            _buildPasswordTF(),
+            _buildSignupBtn(),
+            //            StreamBuilder(
+            //                stream: signupError,
+            //                builder: (context, snapshot) {
+            //                  if (snapshot.hasData) {
+            //                    return Container(
+            //                      height: 40,
+            //                      child: Text(snapshot.data[0].toString()),
+            //                    );
+            //                  } else {
+            //                    return Container(
+            //                      child: Text(
+            //                        "Waiting for the request..",
+            //                        style: kTabBarProfileText.copyWith(fontSize: 30),
+            //                      ),
+            //                    );
+            //                  }
+            //                }),
+          ],
         ),
       ),
     );

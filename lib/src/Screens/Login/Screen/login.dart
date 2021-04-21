@@ -2,8 +2,6 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_animation_progress_bar/flutter_animation_progress_bar.dart';
-import 'package:lottie/lottie.dart';
 import 'package:smartfarmingservices/src/Resources/Constants/constants.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
@@ -15,10 +13,10 @@ import 'package:smartfarmingservices/src/Services/OfflineStore.dart';
 import 'package:validators/validators.dart' as validator;
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:smartfarmingservices/src/Services/Auth.dart';
 import 'package:smartfarmingservices/src/Model/User.dart' as UserModel;
+import 'package:lottie/lottie.dart';
 
 bool isLoading = false;
 
@@ -62,7 +60,6 @@ class _LoginFormState extends State<LoginForm> {
   SharedPreferences preferences;
   bool isLoading = false;
   bool isLogedin = false;
-  final _scaffKey = GlobalKey<ScaffoldState>();
 
   Widget _buildEmailTF() {
     return Column(
@@ -178,13 +175,6 @@ class _LoginFormState extends State<LoginForm> {
       child: RaisedButton(
         elevation: 5.0,
         onPressed: () {
-//          showDialog(
-//              context: context,
-//              builder: (BuildContext context) {
-//                return Center(
-//                  child: CircularProgressIndicator(),
-//                );
-//              });
           if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
 
@@ -268,8 +258,10 @@ class _LoginFormState extends State<LoginForm> {
                 SizedBox(
                   width: MediaQuery.of(context).size.width * .4,
                   height: MediaQuery.of(context).size.width * .4,
-                  child: Lottie.asset('lib/src/Resources/failed.json',
-                      animate: true),
+                  child: Lottie.asset(
+                    'lib/src/Resources/failed.json',
+                    animate: true,
+                  ),
                 ),
                 SizedBox(
                   height: MediaQuery.of(context).size.height * .5 >
@@ -328,8 +320,10 @@ class _LoginFormState extends State<LoginForm> {
                   SizedBox(
                     width: MediaQuery.of(context).size.width * .4,
                     height: MediaQuery.of(context).size.width * .4,
-                    child: Lottie.asset('lib/src/Resources/success.json',
-                        animate: true),
+                    child: Lottie.asset(
+                      'lib/src/Resources/success.json',
+                      animate: true,
+                    ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.width * .1,
@@ -391,13 +385,6 @@ class _LoginFormState extends State<LoginForm> {
             ),
           );
         });
-
-  showSnackPlz(BuildContext context, String text) {
-    final SnackBar snackMe = SnackBar(
-      content: Text(text),
-    );
-    _scaffKey.currentState.showSnackBar(snackMe);
-  }
 
   Widget _buildLoadingWidget() => Center(
         child: CircularProgressIndicator(
@@ -520,47 +507,44 @@ class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffKey,
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Hero(
-                  tag: 'logo',
-                  child: Container(
-                    margin: EdgeInsets.only(
-                      top: MediaQuery.of(context).size.height / 20,
-                    ),
-                    height: 200,
-                    width: 200,
-                    decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: new DecorationImage(
-                        fit: BoxFit.fill,
-                        image: new AssetImage(sft),
-                      ),
+    return Form(
+      key: _formKey,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Hero(
+                tag: 'logo',
+                child: Container(
+                  margin: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height / 20,
+                  ),
+                  height: 200,
+                  width: 200,
+                  decoration: new BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: new DecorationImage(
+                      fit: BoxFit.fill,
+                      image: new AssetImage(sft),
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
-                _buildEmailTF(),
-                SizedBox(
-                  // height: 30.0,
-                  height: 10,
-                ),
-                _buildPasswordTF(),
-                _buildForgotPasswordBtn(),
-                _buildLoginBtn(context),
-                _buildSignInWithText(),
-                _buildSocialBtnRow(),
-                _buildSignupBtn(context),
-              ],
-            ),
+              ),
+              SizedBox(height: 10.0),
+              _buildEmailTF(),
+              SizedBox(
+                // height: 30.0,
+                height: 10,
+              ),
+              _buildPasswordTF(),
+              _buildForgotPasswordBtn(),
+              _buildLoginBtn(context),
+              _buildSignInWithText(),
+              _buildSocialBtnRow(),
+              _buildSignupBtn(context),
+            ],
           ),
         ),
       ),

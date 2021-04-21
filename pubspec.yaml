@@ -83,7 +83,6 @@ flutter:
     - lib/src/Resources/Images/
     - lib/src/Resources/success.json
     - lib/src/Resources/failed.json
-    - lib/src/Resources/Images/backGroundFarm.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
