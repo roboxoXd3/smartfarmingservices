@@ -1,4 +1,4 @@
-const ScreenBackGround = "lib/src/Resources/Images/BackGroundFarm.jpg";
+const ScreenBackGround = "lib/src/Resources/Images/backGroundFarm.jpg";
 const Logo = "lib/src/Resources/Images/sftlogo.png";
 const sft = "lib/src/Resources/Images/SFT.png";
 const facebook = "lib/src/Resources/Images/facebook.jpg";

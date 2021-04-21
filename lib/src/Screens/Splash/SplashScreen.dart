@@ -14,6 +14,7 @@ import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:smartfarmingservices/src/Services/GetPermission.dart';
 import 'package:smartfarmingservices/src/Services/OfflineStore.dart';
+import '../../Model/User.dart' as UserModel;
 
 import '../../Resources/ImageLink/ImageLink.dart';
 
@@ -124,16 +125,22 @@ class _MainScreenState extends State<MainScreen> {
     return StreamBuilder(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data != null) {
 //          preferences =  SharedPreferences.getInstance();
           return FutureBuilder(
             future: offlineStorage.getUserInfo(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData && snapshot.data != null) return Homepage(user: snapshot.data);
+            builder: (context, snapshot1) {
+              if (snapshot1.connectionState == ConnectionState.done &&
+                  snapshot1.hasData) {
+                UserModel.User tempUser = snapshot1.data;
+                if (tempUser.name == null) return LoginScreen();
+                print('User => ' + tempUser.toMap().toString());
+                return Homepage(user: tempUser);
+              }
               return Center(child: CircularProgressIndicator());
             },
           );
+          return LoginScreen();
         } else {
           return LoginScreen();
         }

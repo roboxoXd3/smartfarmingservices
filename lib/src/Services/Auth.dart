@@ -61,9 +61,10 @@ class AuthService {
     return userObject;
   }
 
-  Future<UserModel.User> signInWithEmail({@required String email, @required String password}) async {
+  Future<UserModel.User> signInWithEmail(
+      {@required String email, @required String password}) async {
     UserCredential userCred = await _auth.signInWithEmailAndPassword(
-        email: email, password: password).onError((error, stackTrace) => null);
+        email: email, password: password);
     User registeredUser = userCred.user;
     DatabaseHelper databaseHelper = new DatabaseHelper();
     DocumentSnapshot userDoc =
