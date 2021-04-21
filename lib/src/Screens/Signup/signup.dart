@@ -309,7 +309,10 @@ class _SignUpFormState extends State<SignUpForm> {
           alignment: Alignment.center,
           child: Container(
             padding: EdgeInsets.all(8.0),
-            height: MediaQuery.of(context).size.width * .8,
+            height: MediaQuery.of(context).size.height * .5 >
+                    MediaQuery.of(context).size.width * .7
+                ? MediaQuery.of(context).size.height * .5
+                : MediaQuery.of(context).size.width * .7,
             width: MediaQuery.of(context).size.width * .6,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -325,7 +328,13 @@ class _SignUpFormState extends State<SignUpForm> {
                       animate: true),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.width * .1,
+                  height: MediaQuery.of(context).size.height * .5 >
+                          MediaQuery.of(context).size.width * .7
+                      ? MediaQuery.of(context).size.height * .5 -
+                          MediaQuery.of(context).size.width * .4 -
+                          MediaQuery.of(context).size.width * .2 +
+                          -20
+                      : MediaQuery.of(context).size.width * .1,
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -383,7 +392,11 @@ class _SignUpFormState extends State<SignUpForm> {
                     child: Center(
                       child: Text(
                         'Account created!',
-                        style: Theme.of(context).primaryTextTheme.bodyText2,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color(0xff49ffa0),
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),

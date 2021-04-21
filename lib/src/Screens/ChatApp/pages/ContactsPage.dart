@@ -97,26 +97,60 @@ class _ContactsPageState extends State<ContactsPage> {
                                       child: Row(
                                         children: [
                                           Hero(
-                                            tag: _user['photo'].toString(),
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.15,
-                                              decoration: new BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: new DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: new NetworkImage(
-                                                    _user['photo'].toString(),
+                                            tag: _user['photo'] == null
+                                                ? _user['name']
+                                                    .toString()
+                                                    .split(' ')[0]
+                                                : _user['photo'].toString(),
+                                            child: _user['photo'] == null
+                                                ? Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                    child: CircleAvatar(
+                                                      backgroundColor:
+                                                          Color(0xff56ab2f),
+                                                      child: Text(
+                                                        _user['name']
+                                                            .toString()
+                                                            .toUpperCase()[0],
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.15,
+                                                    decoration:
+                                                        new BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      image:
+                                                          new DecorationImage(
+                                                        fit: BoxFit.cover,
+                                                        image: new NetworkImage(
+                                                          _user['photo']
+                                                              .toString(),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                            ),
                                           ),
                                           SizedBox(
                                             width: MediaQuery.of(context)
@@ -304,8 +338,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                                                     child: Text(
                                                                       _user['name']
                                                                           .toString()
-                                                                          .split(
-                                                                              ' ')[0][0],
+                                                                          .toUpperCase()[0],
                                                                       style: TextStyle(
                                                                           color:
                                                                               Colors.white),

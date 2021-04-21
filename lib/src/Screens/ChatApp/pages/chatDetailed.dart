@@ -26,7 +26,6 @@ class _ChatDetailedState extends State<ChatDetailed> {
   DatabaseHelper dbHelper;
   String chatId;
   OfflineStorage offlineStorage;
-  Map<String, dynamic> userData;
   final _scaffKey = GlobalKey<ScaffoldState>();
 
   final ImagePicker _picker = ImagePicker();
@@ -44,7 +43,6 @@ class _ChatDetailedState extends State<ChatDetailed> {
             userId = widget.userData['uid'].toString();
             myId = user.uid.toString();
             chatId = dbHelper.generateChatId(myId, userId);
-            userData = widget.userData;
           },
         );
       },
@@ -78,17 +76,19 @@ class _ChatDetailedState extends State<ChatDetailed> {
                 child: Row(
                   children: [
                     Hero(
-                      tag: userData['photo'] == null
-                          ? userData['name'].toString().split(' ')[0]
-                          : userData['photo'].toString(),
-                      child: userData['photo'] == null
+                      tag: widget.userData['photo'] == null
+                          ? widget.userData['name'].toString().split(' ')[0]
+                          : widget.userData['photo'].toString(),
+                      child: widget.userData['photo'] == null
                           ? Container(
                               width: MediaQuery.of(context).size.width * 0.1,
                               height: MediaQuery.of(context).size.width * 0.1,
                               child: CircleAvatar(
                                 backgroundColor: Colors.white,
                                 child: Text(
-                                  userData['name'].toString().split(' ')[0][0],
+                                  widget.userData['name']
+                                      .toString()
+                                      .toUpperCase()[0],
                                   style: TextStyle(
                                     color: Color(0xff56ab2f),
                                   ),
@@ -103,7 +103,7 @@ class _ChatDetailedState extends State<ChatDetailed> {
                                 image: new DecorationImage(
                                   fit: BoxFit.cover,
                                   image: new NetworkImage(
-                                    userData['photo'].toString(),
+                                    widget.userData['photo'].toString(),
                                   ),
                                 ),
                               ),
@@ -111,7 +111,7 @@ class _ChatDetailedState extends State<ChatDetailed> {
                     ),
                     SizedBox(width: MediaQuery.of(context).size.width * 0.02),
                     Text(
-                      userData['name'].toString(),
+                      widget.userData['name'].toString(),
                       style: TextStyle(color: Colors.white),
                     )
                   ],
