@@ -34,6 +34,9 @@ dependencies:
   circular_bottom_navigation: ^1.0.1
   flutter_animation_progress_bar: ^1.0.0
   
+  cool_alert: ^1.0.3
+  toast: ^0.1.5
+  
   #Firebase Packages
   cloud_firestore: ^0.14.0+2
   firebase_auth: ^0.18.0+1
@@ -60,7 +63,8 @@ dependencies:
   vector_math: ^2.0.8
 #  stream_chat_flutter: ^1.5.0
 #  cupertino_icons: ^1.0.2
-  lottie: ^0.4.1
+  # lottie: ^0.4.1
+  lottie: 0.7.0+1
 
 
 dev_dependencies:

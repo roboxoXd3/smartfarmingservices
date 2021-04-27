@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
@@ -6,8 +5,10 @@ import 'package:loading_animations/loading_animations.dart';
 import 'package:smartfarmingservices/src/Screens/MyStore/Screen/ProductDetail.dart';
 import 'package:smartfarmingservices/src/Services/CropManager.dart';
 import 'package:smartfarmingservices/src/Services/httpServices.dart';
+import 'package:toast/toast.dart';
 
 import '../Model/product.dart';
+import 'Kart.dart';
 import 'ProductSearch.dart';
 
 class MyStoreContainerLayout extends StatefulWidget {
@@ -17,9 +18,8 @@ class MyStoreContainerLayout extends StatefulWidget {
 
 class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
   CropManager cropManager = CropManager();
-  List<String> filterParamenter = <String>[
-   ' Location'
-  ];
+  List<String> filterParamenter = <String>[' Location'];
+  List<Product> kartProduct = [];
 
   @override
   void initState() {
@@ -55,12 +55,12 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.black38),
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(20))),
+                                        BorderRadius.all(Radius.circular(20))),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Search"),
 //                                      Icon(Icons.search),
@@ -68,7 +68,6 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                   ),
                                 ),
                               ),
-
                             ],
                           ),
                         ),
@@ -86,20 +85,20 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                             Product buyProduct = productList[index];
                             return GestureDetector(
                               onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (context) {
-                                  return ItemDetail(
-                                    image:
-                                    "${HttpServices.itemsUrl}/${buyProduct.Crop_name_store}/image",
-                                    name: buyProduct.Crop_name_store.toString()
-                                        .toUpperCase(),
-                                    location: buyProduct.Location_store,
-                                    Category: buyProduct.Category_store,
-                                    Detail: buyProduct.Detail_store,
-                                    Price: buyProduct.Cost_store,
-                                    rating: buyProduct.Rating_store.toString(),
-                                  );
-                                }));
+                                // Navigator.of(context)
+                                //     .push(MaterialPageRoute(builder: (context) {
+                                //   return ItemDetail(
+                                //     image:
+                                //     "${HttpServices.itemsUrl}/${buyProduct.Crop_name_store}/image",
+                                //     name: buyProduct.Crop_name_store.toString()
+                                //         .toUpperCase(),
+                                //     location: buyProduct.Location_store,
+                                //     Category: buyProduct.Category_store,
+                                //     Detail: buyProduct.Detail_store,
+                                //     Price: buyProduct.Cost_store,
+                                //     rating: buyProduct.Rating_store.toString(),
+                                //   );
+                                // }));
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(4.0),
@@ -110,7 +109,7 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                       color: Colors.white,
                                     ),
                                     height:
-                                    MediaQuery.of(context).size.height / 6,
+                                        MediaQuery.of(context).size.height / 4,
                                     width: MediaQuery.of(context).size.width,
                                     child: Row(
                                       children: <Widget>[
@@ -130,21 +129,21 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                               .size
                                               .height,
                                           width: MediaQuery.of(context)
-                                              .size
-                                              .width /
+                                                  .size
+                                                  .width /
                                               2.5,
                                         ),
                                         Expanded(
                                           child: Container(
                                             decoration:
-                                            BoxDecoration(boxShadow: [
+                                                BoxDecoration(boxShadow: [
                                               BoxShadow(
                                                 color: Colors.grey[100],
                                               )
                                             ]),
                                             child: Column(
                                               mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                                  MainAxisAlignment.center,
                                               children: <Widget>[
                                                 Text(
                                                   "₹" +
@@ -166,17 +165,17 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                                       fontFamily: 'Varela',
                                                       fontSize: 20,
                                                       fontStyle:
-                                                      FontStyle.normal,
+                                                          FontStyle.normal,
                                                       fontWeight:
-                                                      FontWeight.bold),
+                                                          FontWeight.bold),
                                                 ),
                                                 SizedBox(
                                                   height: 20,
                                                 ),
                                                 Padding(
                                                   padding:
-                                                  const EdgeInsets.only(
-                                                      left: 8.0),
+                                                      const EdgeInsets.only(
+                                                          left: 8.0),
                                                   child: Container(
                                                     child: Text(
                                                       buyProduct.Location_store,
@@ -184,11 +183,84 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                                                         fontFamily: 'OpenSans',
                                                         fontSize: 14,
                                                         fontStyle:
-                                                        FontStyle.normal,
+                                                            FontStyle.normal,
                                                       ),
                                                     ),
                                                     alignment:
-                                                    Alignment.bottomCenter,
+                                                        Alignment.bottomCenter,
+                                                  ),
+                                                ),
+                                                Align(
+                                                  alignment:
+                                                      Alignment.bottomRight,
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            right: 32.0,
+                                                            bottom: 10),
+                                                    child: Material(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20),
+                                                      elevation: 10,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          // print(
+                                                          //     "${buyProduct.Crop_name_store.toString()} Product added");
+                                                          // kartProduct
+                                                          //     .add(buyProduct);
+                                                          // Toast.show(
+                                                          //     "${buyProduct.Crop_name_store} Product added",
+                                                          //     context,
+                                                          //     duration: Toast
+                                                          //         .LENGTH_SHORT,
+                                                          //     gravity:
+                                                          //         Toast.BOTTOM);
+                                                        },
+                                                        child: IconButton(
+                                                          icon: Icon(Icons
+                                                              .add_shopping_cart),
+                                                          onPressed: () {
+                                                            print(
+                                                                "${buyProduct.Crop_name_store.toString()} Product added");
+                                                            kartProduct.add(
+                                                                buyProduct);
+                                                            Toast.show(
+                                                                "${buyProduct.Crop_name_store} Product added",
+                                                                context,
+                                                                duration: Toast
+                                                                    .LENGTH_SHORT,
+                                                                gravity: Toast
+                                                                    .BOTTOM);
+
+                                                            // Navigator.push(context,
+                                                            //     MaterialPageRoute(builder: (context) {
+                                                            //       return Kart(
+                                                            //         image: widget.image,
+                                                            //         location: widget.location,
+                                                            //         name: widget.name,
+                                                            //         Price: widget.Price,
+                                                            //       );
+                                                            //     }));
+                                                          },
+                                                          color: Colors.black,
+                                                        ),
+
+//                                                         child: Container(
+//                                                           height: 10,
+//                                                           width: 10,
+//                                                           decoration:
+//                                                               BoxDecoration(
+//                                                                   borderRadius:
+//                                                                       BorderRadius
+//                                                                           .circular(
+//                                                                               20),
+// //                                gradient: kGradientColor,
+//                                                                   color: Colors
+//                                                                       .green),
+//                                                           child:  ),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                               ],
@@ -205,6 +277,29 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
                         ),
                       ),
                     ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: FloatingActionButton(
+                            child: Icon(Icons.add_shopping_cart_outlined),
+                            onPressed: () {
+                              print('List len : ' +
+                                  kartProduct.length.toString());
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return Kart(
+                                  kartProduct: kartProduct,
+
+                                  // image: widget.image,
+                                  // location: widget.location,
+                                  // name: widget.name,
+                                  // Price: widget.Price,
+                                );
+                              }));
+                            }),
+                      ),
+                    )
                   ],
                 );
               } else {

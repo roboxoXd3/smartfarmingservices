@@ -16,6 +16,7 @@ import 'package:smartfarmingservices/src/Screens/Login/Screen/login.dart';
 import 'package:smartfarmingservices/src/Screens/MyStore/Screen/MyStoreContainerlayout.dart';
 
 import 'package:smartfarmingservices/src/Screens/ProfileScreen/profilePage.dart';
+import 'package:smartfarmingservices/src/Screens/Sell/ItemDetailPage.dart';
 
 import 'package:smartfarmingservices/src/Screens/Sell/SellScreenLayout.dart';
 import 'package:smartfarmingservices/src/Services/Auth.dart';
@@ -368,7 +369,7 @@ class _HomepageState extends State<Homepage> {
       case 3:
         container = CustomContainer(
           container: Container(
-            child: SellScreenLayout(),
+            child: ItemDetailPage(),
           ),
         );
         break;

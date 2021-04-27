@@ -109,17 +109,17 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          title: Text("Add Details"),
-          centerTitle: true,
-          flexibleSpace: kAppBarContainer,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: kExpert,
-            ),
-          ],
-        ),
+        // appBar: AppBar(
+        //   title: Text("Add Details"),
+        //   centerTitle: true,
+        //   flexibleSpace: kAppBarContainer,
+        //   actions: [
+        //     Padding(
+        //       padding: const EdgeInsets.all(8.0),
+        //       child: kExpert,
+        //     ),
+        //   ],
+        // ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Container(

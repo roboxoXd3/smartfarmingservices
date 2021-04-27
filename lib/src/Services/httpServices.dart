@@ -8,14 +8,12 @@ import 'package:smartfarmingservices/src/Screens/CropCycle/Model/crop_model.dart
 import 'package:smartfarmingservices/src/Screens/MyStore/Model/product.dart';
 
 class HttpServices {
-  static String baseUrl = "http://bff04c88688e.ngrok.io/";
-  static String getProductList = baseUrl+"product";
-  static final String postUrl = baseUrl+"crop";
-  static String itemsUrl = baseUrl+"buy";
+  static String baseUrl = "http://a9c580865d71.ngrok.io/";
+  static String getProductList = baseUrl + "product";
+  static final String postUrl = baseUrl + "crop";
+  static String itemsUrl = baseUrl + "buy";
 
   static String userUrl = "https://jsonplaceholder.typicode.com/users";
-
-
 
   static Future<List<CropModel>> fetchCrops({query}) async {
     http.Response res = await http.get(getProductList);
@@ -38,6 +36,7 @@ class HttpServices {
     String content = res.body;
     print("My store data is: ");
     print(res.body);
+
     ///yha hm decode b kr rhe aur save b kr rhe ek local List k andr.
     List collection = json.decode(content);
     Iterable<User> _users = collection.map((e) => User.fromjson(e));
@@ -47,7 +46,6 @@ class HttpServices {
     }
     return _users.toList();
   }
-
 
   static Future<List<Product>> fetchItems({query}) async {
     http.Response res = await http.get(itemsUrl);

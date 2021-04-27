@@ -33,7 +33,7 @@ class ItemDetail extends StatefulWidget {
 
 class _ItemDetailState extends State<ItemDetail> {
   List CropData;
-  String url = 'http://c74aa16897a3.ngrok.io/buy';
+  String url = 'http://a9c580865d71.ngrok.io/buy';
 
   double Rating;
   List StoreData;
@@ -137,15 +137,15 @@ class _ItemDetailState extends State<ItemDetail> {
                                 child: IconButton(
                                   icon: Icon(Icons.add_shopping_cart),
                                   onPressed: () {
-                                    Navigator.push(context,
-                                        MaterialPageRoute(builder: (context) {
-                                      return Kart(
-                                        image: widget.image,
-                                        location: widget.location,
-                                        name: widget.name,
-                                        Price: widget.Price,
-                                      );
-                                    }));
+                                    // Navigator.push(context,
+                                    //     MaterialPageRoute(builder: (context) {
+                                    //   return Kart(
+                                    //     image: widget.image,
+                                    //     location: widget.location,
+                                    //     name: widget.name,
+                                    //     Price: widget.Price,
+                                    //   );
+                                    // }));
                                   },
                                   color: Colors.black,
                                 ),
