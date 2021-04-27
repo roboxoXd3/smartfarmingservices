@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+// import 'package:smartfarmingservices/src/Model/User.dart' as user;
 import 'package:smartfarmingservices/src/Model/User.dart';
 import 'package:smartfarmingservices/src/Resources/ImageLink/ImageLink.dart';
 import 'package:smartfarmingservices/src/Resources/Style/styles.dart';
 // import 'package:smartfarmingservices/src/Services/GetPermission.dart';
 import 'Newsfeed/newsfeedLayout.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'Services/Servicelayout.dart';
 
 class DashBoard extends StatefulWidget {
@@ -23,6 +27,20 @@ class _DashBoardState extends State<DashBoard> {
   double longitude;
   String currentAddress = "Fetching.....";
   Future Location;
+
+  final firestoreInstance = FirebaseFirestore.instance;
+  // final FirebaseAuth = FirebaseAuth.instance;
+
+  Future<void> _onPressed() async {
+
+    // String userId = (await firestoreInstance.currentUser()).uid;
+
+    // firestoreInstance.collection("users").get().then((querySnapshot) {
+    //   querySnapshot.docs.forEach((result) {
+    //     print(result.data());
+    //   });
+    // });
+  }
 
   Future getCurrentPosition() async {
     final Geolocator geolocator = Geolocator()..forceAndroidLocationManager;
@@ -59,18 +77,18 @@ class _DashBoardState extends State<DashBoard> {
     return currentAddress;
   }
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
+  @override
+  void initState() {
+    // TODO: implement initState
+_onPressed();
+    // PermissionService().requestLocationPermission(onPermissionDenied: () {
+    //   print('Permission Denied');
+    // });
+    // // getCurrentPosition().whenComplete(() => locationToAddress());
+    // getCurrentPosition().then((value) => locationToAddress());
 
-  //   PermissionService().requestLocationPermission(onPermissionDenied: () {
-  //     print('Permission Denied');
-  //   });
-  //   // getCurrentPosition().whenComplete(() => locationToAddress());
-  //   getCurrentPosition().then((value) => locationToAddress());
-
-  //   super.initState();
-  // }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -211,3 +229,7 @@ class _DashBoardState extends State<DashBoard> {
     );
   }
 }
+
+
+
+

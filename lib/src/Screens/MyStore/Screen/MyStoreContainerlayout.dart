@@ -16,7 +16,7 @@ class MyStoreContainerLayout extends StatefulWidget {
 }
 
 class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
-  CropManager _cropManager = CropManager();
+  CropManager cropManager = CropManager();
   List<String> filterParamenter = <String>[
    ' Location'
   ];
@@ -32,7 +32,7 @@ class _MyStoreContainerLayoutState extends State<MyStoreContainerLayout> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: StreamBuilder(
-            stream: _cropManager.productListView,
+            stream: cropManager.productListView,
             builder:
                 (BuildContext context, AsyncSnapshot<List<Product>> snapshot) {
               if (snapshot.hasData) {

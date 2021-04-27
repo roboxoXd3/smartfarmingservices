@@ -236,81 +236,81 @@ class _ItemDetailState extends State<ItemDetail> {
             SizedBox(
               height: 15,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Card(
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        'Rating',
-                        style: TextStyle(
-                          fontFamily: 'Varela',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        alignment: Alignment.center,
-                        child: RatingBar(
-                          initialRating: double.parse(widget.rating),
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          //Temporarily commenting.. as per discussed with Rishav
-                          // itemBuilder: (context, _) => Icon(
-                          //   Icons.star,
-                          //   color: Colors.amber,
-                          // ),
-                          onRatingUpdate: (rating) {
-                            Rating = rating;
-//                            isFilled = true;
-                          },
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-//                          updateRating().whenComplete(() {
-//                            print("Rating has been updated");
-//                          });
-                        },
-                        child: Material(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Colors.green,
-                          elevation: 10,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: Colors.green,
-                            ),
-                            alignment: Alignment.center,
-                            height: 40,
-                            width: 120,
-                            child: Text(
-                              "Submit",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontFamily: 'Varela',
-                                  fontSize: 25),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
+//             Padding(
+//               padding: const EdgeInsets.only(left: 8.0),
+//               child: Card(
+//                 child: Container(
+//                   alignment: Alignment.centerLeft,
+//                   child: Column(
+//                     children: <Widget>[
+//                       Text(
+//                         'Rating',
+//                         style: TextStyle(
+//                           fontFamily: 'Varela',
+//                           fontWeight: FontWeight.bold,
+//                           fontSize: 15,
+//                         ),
+//                       ),
+//                       SizedBox(
+//                         height: 15,
+//                       ),
+//                       Container(
+//                         alignment: Alignment.center,
+//                         child: RatingBar(
+//                           initialRating: double.parse(widget.rating),
+//                           minRating: 1,
+//                           direction: Axis.horizontal,
+//                           allowHalfRating: true,
+//                           itemCount: 5,
+//                           itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+//                           //Temporarily commenting.. as per discussed with Rishav
+//                           // itemBuilder: (context, _) => Icon(
+//                           //   Icons.star,
+//                           //   color: Colors.amber,
+//                           // ),
+//                           onRatingUpdate: (rating) {
+//                             Rating = rating;
+// //                            isFilled = true;
+//                           },
+//                         ),
+//                       ),
+//                       GestureDetector(
+//                         onTap: () {
+// //                          updateRating().whenComplete(() {
+// //                            print("Rating has been updated");
+// //                          });
+//                         },
+//                         child: Material(
+//                           borderRadius: BorderRadius.circular(20),
+//                           color: Colors.green,
+//                           elevation: 10,
+//                           child: Container(
+//                             decoration: BoxDecoration(
+//                               borderRadius: BorderRadius.circular(20),
+//                               color: Colors.green,
+//                             ),
+//                             alignment: Alignment.center,
+//                             height: 40,
+//                             width: 120,
+//                             child: Text(
+//                               "Submit",
+//                               style: TextStyle(
+//                                   fontWeight: FontWeight.w500,
+//                                   fontFamily: 'Varela',
+//                                   fontSize: 25),
+//                               textAlign: TextAlign.center,
+//                             ),
+//                           ),
+//                         ),
+//                       ),
+//                       SizedBox(
+//                         height: 50,
+//                       )
+//                     ],
+//                   ),
+//                 ),
+//               ),
+//             )
           ]),
         ),
       ),

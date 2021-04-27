@@ -23,22 +23,22 @@ class _CropInfoDisplayState extends State<CropInfoDisplay> {
   final CropManager cropManager = new CropManager();
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
 
-  Future<List<CropModel>> cropCategories() async {
-    http.Response res =
-        await http.get('https://sftservices.herokuapp.com/product');
-
-    List<CropModel> collection = json.decode(res.body);
-
-    print("Crop info collection is: ");
-    print(collection);
-    return collection;
-  }
+  // Future<List<CropModel>> cropCategories() async {
+  //   http.Response res =
+  //       await http.get('https://sftservices.com:5000/product');
+  //
+  //   List<CropModel> collection = json.decode(res.body);
+  //
+  //   print("Crop info collection is: ");
+  //   print(collection);
+  //   return collection;
+  // }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    cropCategories();
+    // cropCategories();
   }
 
   @override

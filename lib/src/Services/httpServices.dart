@@ -8,7 +8,7 @@ import 'package:smartfarmingservices/src/Screens/CropCycle/Model/crop_model.dart
 import 'package:smartfarmingservices/src/Screens/MyStore/Model/product.dart';
 
 class HttpServices {
-  static String baseUrl = "https://sftservices.herokuapp.com/";
+  static String baseUrl = "http://bff04c88688e.ngrok.io/";
   static String getProductList = baseUrl+"product";
   static final String postUrl = baseUrl+"crop";
   static String itemsUrl = baseUrl+"buy";
@@ -36,7 +36,8 @@ class HttpServices {
 
     ///res.body se content k andr wo long string aa gyi jo ki ek list h lekin abi b usko dart m use krne k liye decode krna pdega;
     String content = res.body;
-
+    print("My store data is: ");
+    print(res.body);
     ///yha hm decode b kr rhe aur save b kr rhe ek local List k andr.
     List collection = json.decode(content);
     Iterable<User> _users = collection.map((e) => User.fromjson(e));
