@@ -8,7 +8,7 @@ import 'package:smartfarmingservices/src/Screens/CropCycle/Model/crop_model.dart
 import 'package:smartfarmingservices/src/Screens/MyStore/Model/product.dart';
 
 class HttpServices {
-  static String baseUrl = "http://a9c580865d71.ngrok.io/";
+  static String baseUrl = "http://b4ce39101fc3.ngrok.io/";
   static String getProductList = baseUrl + "product";
   static final String postUrl = baseUrl + "crop";
   static String itemsUrl = baseUrl + "buy";

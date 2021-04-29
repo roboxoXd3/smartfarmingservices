@@ -30,7 +30,7 @@ class ItemDetailPage extends StatefulWidget {
 class _ItemDetailPageState extends State<ItemDetailPage> {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   String imageButton = "Tap to add image";
-  String url = "http://bff04c88688e.ngrok.io/sell";
+  String url = "http://b4ce39101fc3.ngrok.io/sell";
   String addImagemsg = "Nice choice or You Can Change";
   String base64Image;
   String filename;

@@ -369,7 +369,7 @@ class _HomepageState extends State<Homepage> {
       case 3:
         container = CustomContainer(
           container: Container(
-            child: ItemDetailPage(),
+            child: SellScreenLayout(),
           ),
         );
         break;

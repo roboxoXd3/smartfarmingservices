@@ -33,7 +33,7 @@ class ItemDetail extends StatefulWidget {
 
 class _ItemDetailState extends State<ItemDetail> {
   List CropData;
-  String url = 'http://a9c580865d71.ngrok.io/buy';
+  String url = 'http://b4ce39101fc3.ngrok.io/buy';
 
   double Rating;
   List StoreData;
@@ -310,7 +310,7 @@ class _ItemDetailState extends State<ItemDetail> {
 //                   ),
 //                 ),
 //               ),
-//             )
+//
           ]),
         ),
       ),
